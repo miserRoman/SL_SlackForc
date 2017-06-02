@@ -10,17 +10,21 @@ let SF_ACCESS_TOKEN = process.env.SF_ACCESS_TOKEN;
 
 let jsforce = require('jsforce');
 
-let connection = new jsforce.Connection({
-	oauth2: {
-		clientId: SF_CLIENT_ID,
-		clientSecret: SF_CLIENT_SECRET,
-		redirectUri: ''
-	},
-	instanceUrl: SF_LOGIN_URL,
-	accessToken: SF_ACCESS_TOKEN,
-	refreshToken: SF_REFRESH_TOKEN
-});
-conn.on('refresh', function(accessToken, res) {
-	process.env.SF_REFRESH_TOKEN = res;
-	process.env.SF_ACCESS_TOKEN = accessToken;
-}); 
+exports.salesforceConnection = () => {
+	console.log('res123')
+	let connection = new jsforce.Connection({
+		oauth2: {
+			clientId: SF_CLIENT_ID,
+			clientSecret: SF_CLIENT_SECRET,
+			redirectUri: ''
+		},
+		instanceUrl: SF_LOGIN_URL,
+		accessToken: SF_ACCESS_TOKEN,
+		refreshToken: SF_REFRESH_TOKEN
+	});
+	connection.on('refresh', function(accessToken, res) {
+		console.log('res', res)
+		process.env.SF_REFRESH_TOKEN = res;
+		process.env.SF_ACCESS_TOKEN = accessToken;
+	}); 
+}
