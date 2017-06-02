@@ -3,6 +3,7 @@
 let express = require('express');
 let app = express();
 let bodyParser = require('body-parser');
+let auth = require('./modules/salesforceOauth');
 
 app.enable('trust proxy');
 app.set('port', process.env.PORT || 5000);
