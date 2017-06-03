@@ -11,8 +11,12 @@ app.use('/', express.static(__dirname + '/www'));
 app.use(bodyParser.urlencoded({extended: true}));    
 
 app.get('/contact', function(req, res){
-	console.log('here')
-	auth.salesforceConnection;
+	console.log('here111')
+	try {
+		auth.salesforceConnection();
+	} catch(e) {
+		console.log('e', e);
+	}
 }); 
 
 app.listen(app.get('port'), function () {

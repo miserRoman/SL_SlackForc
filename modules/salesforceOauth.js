@@ -10,8 +10,8 @@ let SF_ACCESS_TOKEN = process.env.SF_ACCESS_TOKEN;
 
 let jsforce = require('jsforce');
 
-exports.salesforceConnection = () => {
-	console.log('res123')
+let connectiontesting = () => {
+	console.log('dddddd')
 	let connection = new jsforce.Connection({
 		oauth2: {
 			clientId: SF_CLIENT_ID,
@@ -28,3 +28,5 @@ exports.salesforceConnection = () => {
 		process.env.SF_ACCESS_TOKEN = accessToken;
 	}); 
 }
+
+exports.salesforceConnection = () => connectiontesting
