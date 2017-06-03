@@ -9,9 +9,8 @@ app.enable('trust proxy');
 app.set('port', process.env.PORT || 5000);
 app.use('/', express.static(__dirname + '/www'));
 app.use(bodyParser.urlencoded({extended: true}));    
-
+console.log('ssssssssss')
 app.get('/contact', function(req, res){
-	console.log('here111')
 	try {
 		auth.salesforceConnection();
 	} catch(e) {
