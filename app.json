@@ -4,19 +4,19 @@
   "env": {
     "SF_CLIENT_ID": {
         "description": "Consumer key of your Salesforce Connected App",
-        "value":""
+        "value":"3MVG9ZL0ppGP5UrCf5wvx55drexB.kMLxLy1IZwWwU.T3t56E5Hxj7CTsuMI6CWLGVoPa4cQMJQuT1XneKVLc"
     },
     "SF_CLIENT_SECRET": {
         "description": "Consumer secret of your Salesforce Connected App",
-        "value":""
+        "value":"670683818249147319"
     },
     "SF_USER_NAME": {
         "description": "Salesforce username for your integration user",
-        "value":""
+        "value":"vishnuth1@trekbin.com"
     },
     "SF_PASSWORD": {
         "description": "Salesforce password for your integration user",
-        "value":""
+        "value":"trail321"
     },
     "SF_LOGIN_URL": {
         "description": "Salesforce login URL",
@@ -29,7 +29,7 @@
     },
     "SLACK_CONTACT_TOKEN": {
       "description": "Slack token for the contact slash command",
-      "value":"",
+      "value":"BdGRJn5NJXM1gxDhb5AdhpQU",
       "required":false
     },
     "SLACK_OPPORTUNITY_TOKEN": {
