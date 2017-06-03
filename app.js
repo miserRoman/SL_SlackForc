@@ -41,7 +41,7 @@ if(!SF_REFRESH_TOKEN || !SF_ACCESS_TOKEN) {
 	  	});
 	});
 } else {
-	let connection = new jsforce.Connection({
+	let conn = new jsforce.Connection({
 		oauth2: {
 			clientId: SF_CLIENT_ID,
 			clientSecret: SF_CLIENT_SECRET,
@@ -51,10 +51,11 @@ if(!SF_REFRESH_TOKEN || !SF_ACCESS_TOKEN) {
 		accessToken: SF_ACCESS_TOKEN,
 		refreshToken: SF_REFRESH_TOKEN
 	});
-	connection.on('refresh', function(accessToken, res) {
+	conn.on('refresh', function(accessToken, res) {
 		process.env.SF_REFRESH_TOKEN = res;
 		process.env.SF_ACCESS_TOKEN = accessToken;
 	});
+	connection = conn;
 }
 
 app.enable('trust proxy');
@@ -63,8 +64,22 @@ app.use('/', express.static(__dirname + '/www'));
 app.use(bodyParser.urlencoded({extended: true}));    
 
 app.post('/contact', function(req, res){
-	var query = [];
-	/*conn.query("Select Id, Name from Contact where Name Like '%" + req.)*/
+	var records = [];
+	var query = connection.query("Select Id, Name from Contact where Name Like '%" + req.body.text + "%'")
+			   .on('record',function(record){
+			   		records.push(record);
+				})
+			   .on('end', function(){
+			   		console.log('query', query.totalSize);
+			   		console.log('query', query.totalFetched);
+			   })
+			   .on('err', function(){
+			   		console.log('err', err);
+			   })
+			   .run({
+			   		autoFetch: true,
+			   		maxFetch: 4000
+			   })
 }); 
 
 app.listen(app.get('port'), function () {
