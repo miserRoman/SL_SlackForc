@@ -1,5 +1,5 @@
 "use strict";
-
+/*
 let SLACK_LOGIN_TOKEN = process.env.SLACK_LOGIN_TOKEN;
 let SLACK_LOGOUT_TOKEN = process.env.SLACK_LOGOUT_TOKEN;
 let SF_CLIENT_ID = process.env.SF_CLIENT_ID;
@@ -9,6 +9,7 @@ let SF_REFRESH_TOKEN = process.env.SF_REFRESH_TOKEN;
 let SF_ACCESS_TOKEN = process.env.SF_ACCESS_TOKEN;
 let SF_USER_NAME = process.env.SF_USER_NAME;
 let SF_PASSWORD = process.env.SF_PASSWORD;
+*/
 
 let express = require('express');
 let app = express();
