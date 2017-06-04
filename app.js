@@ -87,9 +87,9 @@ app.use(bodyParser.urlencoded({extended: true}));
 	console.log('dddddddd', req.body.text);		   
 }); */
 
-app.post('/contact', function(req, resp) {
+/*app.post('/contact', function(req, resp) {
 	resp.send({text: 'Testing connection'});
-	/*org.query(
+	org.query(
 		{query: "Select Id, Name from Contact where Name Like '%" + req.body.text + "%'"},
 		function(err, records) {
 			if(err) throw err;
@@ -97,8 +97,12 @@ app.post('/contact', function(req, resp) {
 				console.log('query completed with token: ' + oauth.access_token); // <--- if refreshed, this should be different
     			res.send(body);
   			}
-		});*/
-});
+		});
+});*/
+
+app.post('/contact', (req, res) => {
+	res.send({text: 'successful'});
+})
 
 app.listen(app.get('port'), function () {
 	console.log('Express server listening on port ' + app.get('port'));
