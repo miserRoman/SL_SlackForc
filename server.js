@@ -40,7 +40,7 @@ app.post('/contact', function(req, res) {
 				  mode: 'multi',
 				  autoRefresh: true // <--- set this to true
 				});
-
+	console.log('orgs', org);
 	org.query(
 		{query: "Select Id, Name from Contact where Name Like '%" + req.body.text + "%'"},
 		function(err, records) {
