@@ -11,6 +11,11 @@ let SF_USER_NAME = process.env.SF_USER_NAME;
 let SF_PASSWORD = process.env.SF_PASSWORD;
 
 /*let org = require('./modules/salesforceOauth').salesforceConnection*/
+let express = require('express');
+let app = express();
+let bodyParser = require('body-parser');
+let nforce = require('nforce');
+
 let org = nforce.createConnection({
   clientId: SF_CLIENT_ID,
   clientSecret: SF_CLIENT_SECRET,
@@ -20,11 +25,6 @@ let org = nforce.createConnection({
   mode: 'multi',
   autoRefresh: true // <--- set this to true
 });
-
-let express = require('express');
-let app = express();
-let bodyParser = require('body-parser');
-let nforce = require('nforce');
 
 app.enable('trust proxy');
 app.set('port', process.env.PORT || 5000);
