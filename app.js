@@ -87,7 +87,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 }); */
 
 app.post('/contact', function(req, resp) {
-	resp.send({text: 'connection Established'});
+	resp.send('Connection Established!');
 	/*org.query(
 		{query: "Select Id, Name from Contact where Name Like '%" + req.body.text + "%'"},
 		function(err, records) {
