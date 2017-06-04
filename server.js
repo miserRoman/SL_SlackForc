@@ -16,21 +16,11 @@ let app = express();
 let bodyParser = require('body-parser');
 let nforce = require('nforce');
 
-let org = nforce.createConnection({
-  clientId: SF_CLIENT_ID,
-  clientSecret: SF_CLIENT_SECRET,
-  redirectUri: '',
-  apiVersion: 'v37.0',
-  environment: 'production',
-  mode: 'multi',
-  autoRefresh: true // <--- set this to true
-});
 
 app.enable('trust proxy');
 app.set('port', process.env.PORT || 5000);
 app.use('/', express.static(__dirname + '/www'));
 app.use(bodyParser.urlencoded({extended: true}));
-
 
 app.get('/', function (req, res) {
   res.send('Hello World!')
@@ -41,6 +31,16 @@ app.listen(app.get('port'), function () {
 });
 
 app.post('/contact', function(req, res) {
+	let org = nforce.createConnection({
+				  clientId: SF_CLIENT_ID,
+				  clientSecret: SF_CLIENT_SECRET,
+				  redirectUri: '',
+				  apiVersion: 'v37.0',
+				  environment: 'production',
+				  mode: 'multi',
+				  autoRefresh: true // <--- set this to true
+				});
+
 	org.query(
 		{query: "Select Id, Name from Contact where Name Like '%" + req.body.text + "%'"},
 		function(err, records) {
