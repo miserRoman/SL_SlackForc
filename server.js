@@ -1,12 +1,27 @@
 "use strict";
 
+let SLACK_LOGIN_TOKEN = process.env.SLACK_LOGIN_TOKEN;
+let SLACK_LOGOUT_TOKEN = process.env.SLACK_LOGOUT_TOKEN;
+let SF_CLIENT_ID = process.env.SF_CLIENT_ID;
+let SF_CLIENT_SECRET = process.env.SF_CLIENT_SECRET;
+let SF_LOGIN_URL = process.env.SF_LOGIN_URL;
+let SF_REFRESH_TOKEN = process.env.SF_REFRESH_TOKEN;
+let SF_ACCESS_TOKEN = process.env.SF_ACCESS_TOKEN;
+let SF_USER_NAME = process.env.SF_USER_NAME;
+let SF_PASSWORD = process.env.SF_PASSWORD;
+
+let org = require('./modules/salesforceOauth').salesforceConnection
+
 let express = require('express');
 let app = express();
 let bodyParser = require('body-parser');
 
+app.enable('trust proxy');
 app.set('port', process.env.PORT || 5000);
+app.use('/', express.static(__dirname + '/www'));
+app.use(bodyParser.urlencoded({extended: true}));
 
-app.post('/contact', function(req, res) {
+app.post('/contact', function(req, res) => {
 	res.send({text: 'successful'});
 });
 
@@ -18,30 +33,37 @@ app.listen(app.get('port'), function () {
   console.log('Example app listening on port 3000!')
 });
 
-/*app.enable('trust proxy');*/
-/*app.use('/', express.static(__dirname + '/www'));
-app.use(bodyParser.urlencoded({extended: true}));    
-*/
+app.post('/contact', function(req, res) {
+	org.query(
+		{query: "Select Id, Name from Contact where Name Like '%" + req.body.text + "%'"},
+		function(err, records) {
+			if(err) throw err;
+			else {
+				/*console.log('query completed with token: ' + oauth.access_token); // <--- if refreshed, this should be different
+    			res.send(body);*/
+    			let formattedRecord = [];
+    			records.forEach(function(record, index){
+    				let fields = [];
+    				fields.push({
+    					title: "Name",
+    					value: record.Id,
+    					short: true
+    				});
+    				formattedRecord.push({color: "#A094ED", fields: fields});
+	   			});
+	   			res.json({
+	   				text: 'Matching Records',
+	   				attachments: formattedRecord
+				});
+  			}
+		});
+});
 
 
-/*
-let SLACK_LOGIN_TOKEN = process.env.SLACK_LOGIN_TOKEN;
-let SLACK_LOGOUT_TOKEN = process.env.SLACK_LOGOUT_TOKEN;
-let SF_CLIENT_ID = process.env.SF_CLIENT_ID;
-let SF_CLIENT_SECRET = process.env.SF_CLIENT_SECRET;
-let SF_LOGIN_URL = process.env.SF_LOGIN_URL;
-let SF_REFRESH_TOKEN = process.env.SF_REFRESH_TOKEN;
-let SF_ACCESS_TOKEN = process.env.SF_ACCESS_TOKEN;
-let SF_USER_NAME = process.env.SF_USER_NAME;
-let SF_PASSWORD = process.env.SF_PASSWORD;
-*/
 
-/*let express = require('express');
-let app = express();
-let bodyParser = require('body-parser');
-*/
-/*let org = require('./modules/salesforceOauth').salesforceConnection
-*/
+
+
+
 /*
 let connection = {};
 
@@ -111,24 +133,3 @@ app.use(bodyParser.urlencoded({extended: true}));
 			   })
 	console.log('dddddddd', req.body.text);		   
 }); */
-
-/*app.post('/contact', function(req, resp) {
-	resp.send({text: 'Testing connection'});
-	org.query(
-		{query: "Select Id, Name from Contact where Name Like '%" + req.body.text + "%'"},
-		function(err, records) {
-			if(err) throw err;
-			else {
-				console.log('query completed with token: ' + oauth.access_token); // <--- if refreshed, this should be different
-    			res.send(body);
-  			}
-		});
-});*/
-
-/*app.post('/contact', (req, res) => {
-	res.send({text: 'successful'});
-})
-
-app.listen(app.get('port'), function () {
-	console.log('Express server listening on port ' + app.get('port'));
-});*/
