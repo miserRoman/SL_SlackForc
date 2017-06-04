@@ -6,7 +6,7 @@ let bodyParser = require('body-parser');
 
 app.set('port', process.env.PORT || 5000);
 
-app.post('/contact', (req, res) => {
+app.post('/contact', function(req, res) {
 	res.send({text: 'successful'});
 });
 
