@@ -10,7 +10,16 @@ let SF_ACCESS_TOKEN = process.env.SF_ACCESS_TOKEN;
 let SF_USER_NAME = process.env.SF_USER_NAME;
 let SF_PASSWORD = process.env.SF_PASSWORD;
 
-let org = require('./modules/salesforceOauth').salesforceConnection
+/*let org = require('./modules/salesforceOauth').salesforceConnection*/
+let org = nforce.createConnection({
+  clientId: SF_CLIENT_ID,
+  clientSecret: SF_CLIENT_SECRET,
+  redirectUri: '',
+  apiVersion: 'v37.0',
+  environment: 'production',
+  mode: 'multi',
+  autoRefresh: true // <--- set this to true
+});
 
 let express = require('express');
 let app = express();
@@ -20,6 +29,7 @@ app.enable('trust proxy');
 app.set('port', process.env.PORT || 5000);
 app.use('/', express.static(__dirname + '/www'));
 app.use(bodyParser.urlencoded({extended: true}));
+
 
 app.get('/', function (req, res) {
   res.send('Hello World!')
