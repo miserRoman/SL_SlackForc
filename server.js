@@ -35,11 +35,11 @@ app.post('/contact', function(req, res) {
 	let org = nforce.createConnection({
 					  clientId: SF_CLIENT_ID,
 					  clientSecret: SF_CLIENT_SECRET,
-					  redirectUri: '',
-					  apiVersion: 'v37.0',
+					  redirectUri: ''/*,*/
+					  /*apiVersion: 'v37.0',
 					  environment: 'production',
 					  mode: 'multi',
-					  autoRefresh: true // <--- set this to true
+					  autoRefresh: true*/ // <--- set this to true
 					});
 	org.authenticate({ username: SF_USER_NAME, password: SF_PASSWORD }, function(err, resp){
 
