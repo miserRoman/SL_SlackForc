@@ -5,9 +5,13 @@ let app = express();
 let bodyParser = require('body-parser');
 
 app.enable('trust proxy');
-app.set('port', process.env.PORT || 5000);
+/*app.set('port', process.env.PORT || 5000);*/
 app.use('/', express.static(__dirname + '/www'));
 app.use(bodyParser.urlencoded({extended: true}));    
+
+app.post('/contact', (req, res) => {
+	res.send({text: 'successful'});
+})
 
 app.listen(app.get('port'), function () {
 	console.log('Express server listening on port ' + app.get('port'));
