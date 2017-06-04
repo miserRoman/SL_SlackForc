@@ -21,10 +21,6 @@ app.set('port', process.env.PORT || 5000);
 app.use('/', express.static(__dirname + '/www'));
 app.use(bodyParser.urlencoded({extended: true}));
 
-app.post('/contact', function(req, res) {
-	res.send({text: 'successful'});
-});
-
 app.get('/', function (req, res) {
   res.send('Hello World!')
 });
