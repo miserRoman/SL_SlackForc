@@ -13,6 +13,9 @@ let SF_PASSWORD = process.env.SF_PASSWORD;
 let express = require('express');
 let app = express();
 let bodyParser = require('body-parser');
+
+let org = require('./modules/salesforceOauth').salesforceConnection
+
 /*
 let connection = {};
 
@@ -63,8 +66,8 @@ app.set('port', process.env.PORT || 5000);
 app.use('/', express.static(__dirname + '/www'));
 app.use(bodyParser.urlencoded({extended: true}));    
 
-app.post('/contact', function(req, res){
-	/*var records = [];
+/*app.post('/contact', function(req, res){
+	var records = [];
 	var query = connection.query("Select Id, Name from Contact where Name Like '%" + req.body.text + "%'")
 			   .on('record',function(record){
 			   		records.push(record);
@@ -79,9 +82,22 @@ app.post('/contact', function(req, res){
 			   .run({
 			   		autoFetch: true,
 			   		maxFetch: 4000
-			   })*/
+			   })
 	console.log('dddddddd', req.body.text);		   
-}); 
+}); */
+
+app.post('/contact', function(req, resp) {
+	org.query({
+		query: "Select Id, Name from Contact where Name Like '%" + req.body.text + "%'",
+		function(err, records) {
+			if(err) throw err;
+			else {
+				console.log('query completed with token: ' + oauth.access_token); // <--- if refreshed, this should be different
+    			res.send(body);
+  			}
+		});
+		.
+});
 
 app.listen(app.get('port'), function () {
 	console.log('Express server listening on port ' + app.get('port'));

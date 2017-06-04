@@ -11,6 +11,7 @@
   "dependencies": {
     "body-parser": "^1.17.2",
     "express": "^4.15.3",
-    "jsforce": "^1.8.0"
+    "jsforce": "^1.8.0",
+    "nforce": "^1.7.0"
   }
 }

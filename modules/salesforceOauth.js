@@ -8,25 +8,18 @@ let SF_LOGIN_URL = process.env.SF_LOGIN_URL;
 let SF_REFRESH_TOKEN = process.env.SF_REFRESH_TOKEN;
 let SF_ACCESS_TOKEN = process.env.SF_ACCESS_TOKEN;
 
-let jsforce = require('jsforce');
+/*let jsforce = require('jsforce');*/
 
-let connectiontesting = () => {
-	console.log('dddddd')
-	let connection = new jsforce.Connection({
-		oauth2: {
-			clientId: SF_CLIENT_ID,
-			clientSecret: SF_CLIENT_SECRET,
-			redirectUri: ''
-		},
-		instanceUrl: SF_LOGIN_URL,
-		accessToken: SF_ACCESS_TOKEN,
-		refreshToken: SF_REFRESH_TOKEN
-	});
-	connection.on('refresh', function(accessToken, res) {
-		console.log('res', res)
-		process.env.SF_REFRESH_TOKEN = res;
-		process.env.SF_ACCESS_TOKEN = accessToken;
-	}); 
-}
+let nforce = require('nforce');
 
-exports.salesforceConnection = () => connectiontesting
+let connection = nforce.createConnection({
+  clientId: SF_CLIENT_ID,
+  clientSecret: SF_CLIENT_SECRET,
+  redirectUri: '',
+  apiVersion: 'v37.0',
+  environment: 'production',
+  mode: 'multi',
+  autoRefresh: true // <--- set this to true
+});
+
+exports.salesforceConnection = connection
