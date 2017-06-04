@@ -47,14 +47,12 @@ app.listen(app.get('port'), function () {
 
 app.post('/contact', function(req, res) {
 
-	console.log('orgs', org);
+	/*console.log('orgs', org);
 	org.query(
 		{query: "Select Id, Name from Contact where Name Like '%" + req.body.text + "%'"},
 		function(err, records) {
 			if(err) throw err;
 			else {
-				/*console.log('query completed with token: ' + oauth.access_token); // <--- if refreshed, this should be different
-    			res.send(body);*/
     			let formattedRecord = [];
     			records.forEach(function(record, index){
     				let fields = [];
@@ -70,7 +68,8 @@ app.post('/contact', function(req, res) {
 	   				attachments: formattedRecord
 				});
   			}
-		});
+		});*/
+		res.send({text: SF_USER_NAME + ':' + SF_PASSWORD});
 });
 
 
