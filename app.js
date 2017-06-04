@@ -87,7 +87,8 @@ app.use(bodyParser.urlencoded({extended: true}));
 }); */
 
 app.post('/contact', function(req, resp) {
-	org.query(
+	resp.send({text: 'connection Established'});
+	/*org.query(
 		{query: "Select Id, Name from Contact where Name Like '%" + req.body.text + "%'"},
 		function(err, records) {
 			if(err) throw err;
@@ -95,7 +96,7 @@ app.post('/contact', function(req, resp) {
 				console.log('query completed with token: ' + oauth.access_token); // <--- if refreshed, this should be different
     			res.send(body);
   			}
-		});
+		});*/
 });
 
 app.listen(app.get('port'), function () {
