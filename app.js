@@ -13,7 +13,7 @@ let SF_PASSWORD = process.env.SF_PASSWORD;
 let express = require('express');
 let app = express();
 let bodyParser = require('body-parser');
-
+/*
 let connection = {};
 
 if(!SF_REFRESH_TOKEN || !SF_ACCESS_TOKEN) {
@@ -48,7 +48,7 @@ if(!SF_REFRESH_TOKEN || !SF_ACCESS_TOKEN) {
 			redirectUri: ''
 		},
 		instanceUrl: SF_LOGIN_URL,
-		accessToken: SF_ACCESS_TOKEN,
+		accessToken: SF_ACCESS_TOKEN, 
 		refreshToken: SF_REFRESH_TOKEN
 	});
 	conn.on('refresh', function(accessToken, res) {
@@ -56,7 +56,7 @@ if(!SF_REFRESH_TOKEN || !SF_ACCESS_TOKEN) {
 		process.env.SF_ACCESS_TOKEN = accessToken;
 	});
 	connection = conn;
-}
+}*/
 
 app.enable('trust proxy');
 app.set('port', process.env.PORT || 5000);
@@ -64,7 +64,7 @@ app.use('/', express.static(__dirname + '/www'));
 app.use(bodyParser.urlencoded({extended: true}));    
 
 app.post('/contact', function(req, res){
-	var records = [];
+	/*var records = [];
 	var query = connection.query("Select Id, Name from Contact where Name Like '%" + req.body.text + "%'")
 			   .on('record',function(record){
 			   		records.push(record);
@@ -79,7 +79,8 @@ app.post('/contact', function(req, res){
 			   .run({
 			   		autoFetch: true,
 			   		maxFetch: 4000
-			   })
+			   })*/
+	console.log('dddddddd', req.body.text);		   
 }); 
 
 app.listen(app.get('port'), function () {
