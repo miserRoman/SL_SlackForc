@@ -1,4 +1,18 @@
 "use strict";
+
+let express = require('express');
+let app = express();
+let bodyParser = require('body-parser');
+
+app.enable('trust proxy');
+app.set('port', process.env.PORT || 5000);
+app.use('/', express.static(__dirname + '/www'));
+app.use(bodyParser.urlencoded({extended: true}));    
+
+app.listen(app.get('port'), function () {
+	console.log('Express server listening on port ' + app.get('port'));
+});
+
 /*
 let SLACK_LOGIN_TOKEN = process.env.SLACK_LOGIN_TOKEN;
 let SLACK_LOGOUT_TOKEN = process.env.SLACK_LOGOUT_TOKEN;
