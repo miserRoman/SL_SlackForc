@@ -10,10 +10,12 @@ let SF_ACCESS_TOKEN = process.env.SF_ACCESS_TOKEN;
 let SF_USER_NAME = process.env.SF_USER_NAME;
 let SF_PASSWORD = process.env.SF_PASSWORD;
 
-/*let org = require('./modules/salesforceOauth').salesforceConnection*/
+/*let oauth2 = require('./modules/salesforceOauth')*/
 let express = require('express');
 let app = express();
 let bodyParser = require('body-parser');
+
+let jsforce = require('jsforce');
 
 app.enable('trust proxy');
 app.set('port', process.env.PORT || 5000);
@@ -24,9 +26,36 @@ app.use(bodyParser.urlencoded({extended: true}));
   res.send('Hello World!')
 });*/
 
+/*app.get('/login', oAuth.login);
+app.get('/oauth2/auth', oauth2.oAuthLogin);
+app.get('/oauth2/callback', oauth2.oAuthCallback);
+*/
 app.post('/contact', function(req, res) {
-	/*console.log('org', org);*/
-	res.send({text: SF_USER_NAME + ':' + SF_PASSWORD});
+	let conn = new jsforce.Connection({});
+	let records = [];
+	conn.login(SF_USER_NAME, SF_PASSWORD, function(err, userInfo) {
+	  	if (err) { return console.error(err); }
+	  	conn.query("Select Id, Name from Contact where Name Like '%" + req.body.text + "%'")
+	  	    .on("record", function(record){
+	  	    	let fields = [];
+	  	    	fields.push({
+	  	    		'title': record.Name, 
+	  	    		value: record.Id, 
+	  	    		short: true
+	  	    	});
+	  	    	records.push({
+	  	    		color: "#A094ED",
+	  	    		fields: fields
+	  	    	});
+	  	    })
+	  	    .on("end", function(){
+	  	    	res.json({text: "Contacts matching '" , attachments: records})
+	  	    })
+	  	    .run({ 
+	  	    	autoFetch : true, 
+	  	    	maxFetch : 4000 
+	  	    });
+	});
 });
 
 app.listen(app.get('port'), function () {

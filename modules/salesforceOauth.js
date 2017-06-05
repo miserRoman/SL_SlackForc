@@ -12,16 +12,33 @@ let mappings = {};
 
 let jsforce = require('jsforce');
 
+let oth = {};
 
-let oauth2 = new sf.OAuth2({
-  	clientId : SF_CLIENT_ID,
-  	clientSecret : SF_CLIENT_SECRET,
-  	redirectUri : ''
-});
-
-exports.oAuthLogin = (req, res) => {
-
+exports.login = (req, res) => {
+	let oauth2 = new sf.OAuth2({
+	  	clientId : SF_CLIENT_ID,
+	  	clientSecret : SF_CLIENT_SECRET,
+	  	redirectUri : ''
+	});
+	oth = oauth2;
 }
 
-exports.salesforceConnection = connection
-*/
+exports.oAuthLogin = (req, res) => {
+	res.redirect(oth.getAuthorizationUrl({ scope :  }));
+}
+
+exports.oAuthCallback = (req, res) => {
+	var conn = new sf.Connection({ oauth2 : oth });
+  	var code = req.param('code');
+  	conn.authorize(code, function(err, userInfo) {
+	    if (err) { return console.error(err); }
+	    mappings[]
+	    console.log(conn.accessToken);
+	    console.log(conn.refreshToken);
+	    console.log(conn.instanceUrl);
+	    console.log("User ID: " + userInfo.id);
+	    console.log("Org ID: " + userInfo.organizationId);
+	});
+}
+
+exports.getSlackUserMappings = (slackUserId) => mappings[slackUserId];*/
