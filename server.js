@@ -23,12 +23,12 @@ app.use('/', express.static(__dirname + '/www'));
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.get('/login', function(req, res){
-	/*console.log('fffff', SF_LOGIN_URL);*/
+	
 	let oauth2 = new jsforce.OAuth2({
 		loginUrl : SF_LOGIN_URL,
 	    clientId: SF_CLIENT_ID,
 	    clientSecret: SF_CLIENT_SECRET,
-	    redirectUri: ''
+	    redirectUri: 'https://${req.hostname}/login'
 	});
 	
 	slackConnections[req.user_id] = {};
