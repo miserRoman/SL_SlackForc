@@ -10,7 +10,6 @@ let SF_ACCESS_TOKEN = process.env.SF_ACCESS_TOKEN;
 let SF_USER_NAME = process.env.SF_USER_NAME;
 let SF_PASSWORD = process.env.SF_PASSWORD;
 
-/*let oauth2 = require('./modules/salesforceOauth')*/
 let express = require('express');
 let app = express();
 let bodyParser = require('body-parser');
