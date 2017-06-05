@@ -27,11 +27,14 @@ app.get('/login', function(req, res){
 });
 
 app.post('/contact', function(req, res) {
-	let conn = new jsforce.Connection({});
 	let records = [];
+
+	let conn = new jsforce.Connection({
+		loginUrl : SF_LOGIN_URL
+	});
+	
 	conn.login(SF_USER_NAME, SF_PASSWORD, function(err, userInfo) {
 	  	if (err) { return console.error(err); }
-	  	console.log('query', "Select Id, Name, Account.Name, Phone from Contact where Name Like '%" + req.body.text + "%'");
 	  	conn.query("Select Id, Name, Account.Name, Phone from Contact where Name Like '%" + req.body.text + "%'")
 	  	    .on("record", function(record){
 	  	    	let fields = [];
