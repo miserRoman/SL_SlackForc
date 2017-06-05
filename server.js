@@ -14,8 +14,9 @@ let SF_PASSWORD = process.env.SF_PASSWORD;
 let express = require('express');
 let app = express();
 let bodyParser = require('body-parser');
-
 let jsforce = require('jsforce');
+
+let slackConnections = {};
 
 app.enable('trust proxy');
 app.set('port', process.env.PORT || 5000);
@@ -23,7 +24,31 @@ app.use('/', express.static(__dirname + '/www'));
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.get('/login', function(req, res){
+	
+	var oauth2 = new jsforce.OAuth2({
+	    clientId: SF_CLIENT_ID
+	    clientSecret: SF_CLIENT_SECRET,
+	    redirectUri: ''
+	});
+	
+	slackConnections[req.user_id] = {};
 
+	app.get('/oauth2/auth', function(oAuth2Req, oAuth2Res){
+		oAuth2Res.redirect(oauth2.getAuthorizationUrl({scope:req.user_id}));
+	});
+	
+	app.get('/oauth2/callback', function(oAuth2CallbackReq, oAuth2CallbackRes) {
+		let conn = new jsforce.Connection({oauth2: oauth2});
+		let code = req.query.code;
+		conn.authorize(code, function(err, userInfo) {
+	        if (err) { return console.error(err); }
+	        slackConnections[req.user_id] = {
+	        	'accessToken' : conn.accessToken,
+	        	'refreshToken': conn.refreshToken
+	        }
+	        res.send({text:'Login Successful'});
+	    });
+	});	
 });
 
 app.post('/contact', function(req, res) {
