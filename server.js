@@ -25,7 +25,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 });*/
 
 app.post('/contact', function(req, res) {
-	console.log('org', org);
+	/*console.log('org', org);*/
 	res.send({text: SF_USER_NAME + ':' + SF_PASSWORD});
 });
 
