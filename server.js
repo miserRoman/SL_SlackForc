@@ -23,38 +23,14 @@ app.use('/', express.static(__dirname + '/www'));
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.get('/login', function(req, res){
-	
-	let paramUserId = req.param('user_id');
-
-	let oauth2 = new jsforce.OAuth2({
-		loginUrl : SF_LOGIN_URL,
-	    clientId: SF_CLIENT_ID,
-	    clientSecret: SF_CLIENT_SECRET,
-	    redirectUri: 'https://salesforce-slack-connect.herokuapp.com/oauth2/auth'
-	});
-	/*'https://salesforce-slack-connect.herokuapp.com/oauth2/auth'*/
-	slackConnections[paramUserId] = {};
-
-	app.get('/oauth2/auth', function(oAuth2Req, oAuth2Res){
-		res.send({text:'Login Successful'});
-		oAuth2Res.redirect(oauth2.getAuthorizationUrl({scope:paramUserId}));
-	});
-	
-	app.get('/oauth2/callback', function(oAuth2CallbackReq, oAuth2CallbackRes) {
-		console.log('debug - 44');
-		let conn = new jsforce.Connection({oauth2: oauth2});
-		let code = req.query.code;
-		conn.authorize(code, function(err, userInfo) {
-	        if (err) { return console.error(err); }
-	        slackConnections[req.user_id] = {
-	        	'accessToken' : conn.accessToken,
-	        	'refreshToken': conn.refreshToken
-	        }
-	        res.send({text:'Login Successful'});
-	    });
-	});	
-	/*res.send({text:'Login Successful'});*/
+	slackConnections[req.params.user_id] = {};
+	res.redirect(`${SF_LOGIN_URL}/services/oauth2/authorize?response_type=code&client_id=${SF_CLIENT_ID}&redirect_uri=https://${req.hostname}/oauthcallback&state=${req.params.user_id}`);
 });
+
+app.get('/oauthcallback', function(req, res){
+	console.log('hereh', res.code);
+});
+
 
 app.post('/contact', function(req, res) {
 	res.send({text:slackConnections[req.user_id]});
