@@ -42,7 +42,7 @@ app.post('/contact', function(req, res) {
 	  	    	});
 	  	    	fields.push({
 	  	    		'title': 'Account Name', 
-	  	    		value: (record.Account) ? record.Account.Name : ''
+	  	    		value: (record.Account) ? record.Account.Name : '',
 	  	    		short: true
 	  	    	});
 	  	    	fields.push({
