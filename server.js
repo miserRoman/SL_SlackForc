@@ -22,19 +22,16 @@ app.set('port', process.env.PORT || 5000);
 app.use('/', express.static(__dirname + '/www'));
 app.use(bodyParser.urlencoded({extended: true}));
 
-/*app.get('/', function (req, res) {
-  res.send('Hello World!')
-});*/
+app.get('/login', function(req, res){
 
-/*app.get('/login', oAuth.login);
-app.get('/oauth2/auth', oauth2.oAuthLogin);
-app.get('/oauth2/callback', oauth2.oAuthCallback);
-*/
+});
+
 app.post('/contact', function(req, res) {
 	let conn = new jsforce.Connection({});
 	let records = [];
 	conn.login(SF_USER_NAME, SF_PASSWORD, function(err, userInfo) {
 	  	if (err) { return console.error(err); }
+	  	console.log('query', "Select Id, Name, Account.Name, Phone from Contact where Name Like '%" + req.body.text + "%'");
 	  	conn.query("Select Id, Name, Account.Name, Phone from Contact where Name Like '%" + req.body.text + "%'")
 	  	    .on("record", function(record){
 	  	    	let fields = [];
