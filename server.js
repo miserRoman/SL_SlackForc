@@ -23,8 +23,8 @@ app.use('/', express.static(__dirname + '/www'));
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.get('/login', function(req, res){
-	slackConnections[req.params.user_id] = {};
-	console.log('sssss', req)
+	slackConnections[req.query.user_id] = {};
+	console.log('sssss', req.query.user_id)
 	res.redirect(`${SF_LOGIN_URL}/services/oauth2/authorize?response_type=code&client_id=${SF_CLIENT_ID}&redirect_uri=https://${req.hostname}/oauthcallback&state=${req.params.user_id}`);
 });
 
