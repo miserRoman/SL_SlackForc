@@ -28,7 +28,7 @@ app.get('/login', function(req, res){
 		loginUrl : SF_LOGIN_URL,
 	    clientId: SF_CLIENT_ID,
 	    clientSecret: SF_CLIENT_SECRET,
-	    redirectUri: 'https://salesforce-slack-connect.herokuapp.com/login'
+	    redirectUri: 'https://salesforce-slack-connect.herokuapp.com/oauth2/callback'
 	});
 	
 	slackConnections[req.user_id] = {};
