@@ -49,7 +49,7 @@ app.get('/login', function(req, res){
 	        res.send({text:'Login Successful'});
 	    });
 	});	
-	/*res.send({text:'Login Successful'});*/
+	res.send({text:'Login Successful'});
 });
 
 app.post('/contact', function(req, res) {
