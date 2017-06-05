@@ -32,7 +32,7 @@ app.get('/login', function(req, res){
 	    clientSecret: SF_CLIENT_SECRET,
 	    redirectUri: '/oauth2/callback'
 	});
-	/*'https://salesforce-slack-connect.herokuapp.com/oauth2/callback'
+	/*'https://salesforce-slack-connect.herokuapp.com/oauth2/callback'*/
 	slackConnections[paramUserId] = {};
 
 	app.get('/oauth2/auth', function(oAuth2Req, oAuth2Res){
@@ -53,15 +53,7 @@ app.get('/login', function(req, res){
 	        res.send({text:'Login Successful'});
 	    });
 	});	
-	res.send({text:'Login Successful'});*/
-
-
-});
-
-app.get('/oauth2/auth', function(oAuth2Req, oAuth2Res){
-	console.log('debug - 39', oAuth2Req);
-	console.log('debug - 40', oAuth2Res);
-	/*oAuth2Res.redirect(oauth2.getAuthorizationUrl({scope:paramUserId}));*/
+	res.send({text:'Login Successful'});
 });
 
 app.post('/contact', function(req, res) {
