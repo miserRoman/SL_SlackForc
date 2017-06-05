@@ -26,7 +26,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.get('/login', function(req, res){
 	
 	var oauth2 = new jsforce.OAuth2({
-	    clientId: SF_CLIENT_ID
+	    clientId: SF_CLIENT_ID,
 	    clientSecret: SF_CLIENT_SECRET,
 	    redirectUri: ''
 	});
