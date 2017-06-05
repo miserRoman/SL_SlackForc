@@ -53,7 +53,8 @@ app.get('/login', function(req, res){
 });
 
 app.post('/contact', function(req, res) {
-	let records = [];
+	res.send({text:slackConnections[req.user_id]});
+	/*let records = [];
 
 	let conn = new jsforce.Connection({
 		loginUrl : SF_LOGIN_URL
@@ -91,7 +92,8 @@ app.post('/contact', function(req, res) {
 	  	    	autoFetch : true, 
 	  	    	maxFetch : 4000 
 	  	    });
-	});
+	});*/
+
 });
 
 app.listen(app.get('port'), function () {
