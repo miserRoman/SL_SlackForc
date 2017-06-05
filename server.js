@@ -14,63 +14,25 @@ let SF_PASSWORD = process.env.SF_PASSWORD;
 let express = require('express');
 let app = express();
 let bodyParser = require('body-parser');
-let nforce = require('nforce');
 
 app.enable('trust proxy');
 app.set('port', process.env.PORT || 5000);
 app.use('/', express.static(__dirname + '/www'));
 app.use(bodyParser.urlencoded({extended: true}));
 
-app.get('/', function (req, res) {
+/*app.get('/', function (req, res) {
   res.send('Hello World!')
+});*/
+
+app.post('/contact', function(req, res) {
+	console.log('org', org);
+	res.send({text: SF_USER_NAME + ':' + SF_PASSWORD});
 });
 
 app.listen(app.get('port'), function () {
   console.log('Example app listening on port 3000!')
 });
 
-app.post('/contact', function(req, res) {
-
-
-	let org = nforce.createConnection({
-					  clientId: SF_CLIENT_ID,
-					  clientSecret: SF_CLIENT_SECRET,
-					  redirectUri: ''/*,*/
-					  /*apiVersion: 'v37.0',
-					  environment: 'production',
-					  mode: 'multi',
-					  autoRefresh: true*/ // <--- set this to true
-					});
-	org.authenticate({ username: SF_USER_NAME, password: SF_PASSWORD }, function(err, resp){
-
-	});
-	
-	console.log('orgs', org);
-	
-	org.query(
-		{query: "Select Id, Name from Contact where Name Like '%" + req.body.text + "%'"},
-		function(err, records) {
-			if(err) throw err;
-			else {
-    			let formattedRecord = [];
-    			records.forEach(function(record, index){
-    				let fields = [];
-    				fields.push({
-    					title: "Name",
-    					value: record.Id,
-    					short: true
-    				});
-    				formattedRecord.push({color: "#A094ED", fields: fields});
-	   			});
-	   			res.json({
-	   				text: 'Matching Records',
-	   				attachments: formattedRecord
-				});
-  			}
-		});
-		console.log('org', org);
-		res.send({text: SF_USER_NAME + ':' + SF_PASSWORD});
-});
 
 
 
