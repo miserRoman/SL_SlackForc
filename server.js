@@ -35,12 +35,22 @@ app.post('/contact', function(req, res) {
 	let records = [];
 	conn.login(SF_USER_NAME, SF_PASSWORD, function(err, userInfo) {
 	  	if (err) { return console.error(err); }
-	  	conn.query("Select Id, Name from Contact where Name Like '%" + req.body.text + "%'")
+	  	conn.query("Select Id, Name, Account.Name, Phone from Contact where Name Like '%" + req.body.text + "%'")
 	  	    .on("record", function(record){
 	  	    	let fields = [];
 	  	    	fields.push({
-	  	    		'title': record.Name, 
-	  	    		value: record.Id, 
+	  	    		'title': 'Name', 
+	  	    		value: record.Name, 
+	  	    		short: true
+	  	    	});
+	  	    	fields.push({
+	  	    		'title': 'Account Name', 
+	  	    		value: record.Account.Name, 
+	  	    		short: true
+	  	    	});
+	  	    	fields.push({
+	  	    		'title': 'Phone', 
+	  	    		value: record.Phone, 
 	  	    		short: true
 	  	    	});
 	  	    	records.push({
