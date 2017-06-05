@@ -36,7 +36,7 @@ app.get('/login', function(req, res){
 	slackConnections[paramUserId] = {};
 
 	app.get('/oauth2/auth', function(oAuth2Req, oAuth2Res){
-		console.log('debug - 39');
+		res.send({text:'Login Successful'});
 		oAuth2Res.redirect(oauth2.getAuthorizationUrl({scope:paramUserId}));
 	});
 	
@@ -53,12 +53,12 @@ app.get('/login', function(req, res){
 	        res.send({text:'Login Successful'});
 	    });
 	});	
-	res.send({text:'Login Successful'});
+	/*res.send({text:'Login Successful'});*/
 });
 
 app.post('/contact', function(req, res) {
-	/*res.send({text:slackConnections[req.user_id]});*/
-	let records = [];
+	res.send({text:slackConnections[req.user_id]});
+	/*let records = [];
 
 	let conn = new jsforce.Connection({
 		loginUrl : SF_LOGIN_URL
@@ -97,7 +97,7 @@ app.post('/contact', function(req, res) {
 	  	    	maxFetch : 4000 
 	  	    });
 	});
-
+*/
 });
 
 app.listen(app.get('port'), function () {
