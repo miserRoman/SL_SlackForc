@@ -47,7 +47,7 @@ app.get('/oauthcallback', function(req, res){
             console.log(error);
             return res.send("error");
         }
-        console.log('response', JSON.parse(body));
+        console.log('responsehere ', JSON.parse(body));
         mappings[slackUserId] = JSON.parse(body);
         let html = `
             <html>
@@ -67,8 +67,8 @@ app.get('/oauthcallback', function(req, res){
 
 
 app.post('/contact', function(req, res) {
-	/*res.send({text:'dumb'});*/
-	let records = [];
+	res.send({text:'dumb'});
+	/*let records = [];
 
 	let conn = new jsforce.Connection({
 		loginUrl : SF_LOGIN_URL
@@ -106,7 +106,7 @@ app.post('/contact', function(req, res) {
 	  	    	autoFetch : true, 
 	  	    	maxFetch : 4000 
 	  	    });
-	});
+	});*/
 
 });
 
