@@ -66,57 +66,10 @@ app.get('/oauthcallback', function(req, res){
 });
 
 app.post('/contact', function(req, res) {
-	/*console.log('userId', slackConnections);
-	console.log('req', req);
-	res.send({text:'dumb'});*/
-	/*let records = [];
-
-	let conn = new jsforce.Connection({
-		loginUrl : SF_LOGIN_URL
-	});
 	
-	conn.login(SF_USER_NAME, SF_PASSWORD, function(err, userInfo) {
-	  	if (err) { return console.error(err); }
-	  	conn.query("Select Id, Name, Account.Name, Phone from Contact where Name Like '%" + req.body.text + "%'")
-	  	    .on("record", function(record){
-	  	    	let fields = [];
-	  	    	fields.push({
-	  	    		'title': 'Name', 
-	  	    		value: record.Name, 
-	  	    		short: true
-	  	    	});
-	  	    	fields.push({
-	  	    		'title': 'Account Name', 
-	  	    		value: (record.Account) ? record.Account.Name : '',
-	  	    		short: true
-	  	    	});
-	  	    	fields.push({
-	  	    		'title': 'Phone', 
-	  	    		value: record.Phone, 
-	  	    		short: true
-	  	    	});
-	  	    	records.push({
-	  	    		color: "#A094ED",
-	  	    		fields: fields
-	  	    	});
-	  	    })
-	  	    .on("end", function(){
-	  	    	res.json({text: "Contacts matching '" , attachments: records})
-	  	    })
-	  	    .run({ 
-	  	    	autoFetch : true, 
-	  	    	maxFetch : 4000 
-	  	    });
-	});*/
-
-	/*let conn = new jsforce.Connection({
-		oauth2 : {
-
-		},
-		instanceUrl :
-		accessToken :
-		refreshToken 
-	});*/
+	if( !slackConnections[slackUserId] ) {
+		res.send({text: 'Please authenticate with /sfdclogin commmand first'});
+	}
 
 	let slackUserId = req.body.user_id;
 	let conn = new jsforce.Connection({
@@ -129,7 +82,7 @@ app.post('/contact', function(req, res) {
 		accessToken : slackConnections[slackUserId].access_token,
 		refreshToken : slackConnections[slackUserId].refresh_token
 	});
-	conn.on('refresh', function(accessToken, res) {
+	conn.on('refresh', function(accessToken, resp) {
   			
   	});
   	conn.query("Select Id, Name, Account.Name, Phone from Contact where Name Like '%" + req.body.text + "%'")
