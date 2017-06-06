@@ -13,7 +13,8 @@ let SF_PASSWORD = process.env.SF_PASSWORD;
 let express = require('express');
 let app = express();
 let bodyParser = require('body-parser');
-let jsforce = require('jsforce');
+/*let jsforce = require('jsforce');*/
+let request = require('request');
 
 let slackConnections = {};
 
@@ -23,17 +24,42 @@ app.use('/', express.static(__dirname + '/www'));
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.get('/login', function(req, res){
-	slackConnections[req.query.user_id] = {};
-	console.log('sssss', req.query.user_id)
-	console.log('login', SF_LOGIN_URL);
-	console.log('Client id', SF_CLIENT_ID);
 	let redirectURL = `${SF_LOGIN_URL}/services/oauth2/authorize?response_type=code&client_id=${SF_CLIENT_ID}&redirect_uri=https://salesforce-slack-connect.herokuapp.com/oauthcallback&state=${req.query.user_id}`;
-	console.log('redirectURL', redirectURL);
 	res.redirect(redirectURL);
 });
 
 app.get('/oauthcallback', function(req, res){
-	console.log('hereh', res.code);
+	let slackUserId = req.query.state;
+	let options = {
+        url: `${SF_LOGIN_URL}/services/oauth2/token`,
+        qs: {
+            grant_type: "authorization_code",
+            code: req.query.code,
+            client_id: SF_CLIENT_ID,
+            client_secret: SF_CLIENT_SECRET,
+            redirect_uri: `https://salesforce-slack-connect.herokuapp.com/oauthcallback`
+        }
+    };
+    request.post(options, function (error, response, body){
+    	if (error) {
+            console.log(error);
+            return res.send("error");
+        }
+        mappings[slackUserId] = JSON.parse(body);
+        let html = `
+            <html>
+            <body style="text-align:center;padding-top:100px">
+            <img src="images/linked.png"/>
+            <div style="font-family:'Helvetica Neue';font-weight:300;color:#444">
+                <h2 style="font-weight: normal">Authentication completed</h2>
+                Your Slack User Id is now linked to your Salesforce User Id.<br/>
+                You can now go back to Slack and execute authenticated Salesforce commands.
+            </h2>
+            </body>
+            </html>
+            `;
+        res.send(html);
+    });
 });
 
 
