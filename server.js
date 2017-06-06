@@ -39,11 +39,11 @@ app.get('/login', function(req, res){
 });
 
 app.get('/login/:slackUserId', function(req, res){
-	res.redirect(`${SF_LOGIN_URL}/services/oauth2/authorize?response_type=code&prompt=login&client_id=${SF_CLIENT_ID}&redirect_uri=https://salesforce-slack-connect.herokuapp.com/oauthcallback&state=${req.params.slackUserId}`);
+	res.redirect(`${SF_LOGIN_URL}/services/oauth2/authorize?response_type=code&prompt=login&display=popup&client_id=${SF_CLIENT_ID}&redirect_uri=https://salesforce-slack-connect.herokuapp.com/oauthcallback&state=${req.params.slackUserId}`);
 });
 
 app.get('/oauthcallback', function(req, res){
-	let slackUserId = req.query.state;
+	/*let slackUserId = req.query.state;
 	var conn = new sf.Connection({ oauth2 : oauth2 });
 	var code = req.param('code');
 	conn.authorize(code, function(err, userInfo) {
@@ -54,8 +54,8 @@ app.get('/oauthcallback', function(req, res){
 		console.log(conn.instanceUrl);
 		console.log("User ID: " + userInfo.id);
 		console.log("Org ID: " + userInfo.organizationId);
-	});
-	/*let options = {
+	});*/
+	let options = {
         url: `${SF_LOGIN_URL}/services/oauth2/token`,
         qs: {
             grant_type: "authorization_code",
@@ -87,7 +87,7 @@ app.get('/oauthcallback', function(req, res){
             </html>
             `;
         res.send(html);
-    });*/
+    });
 });
 
 app.post('/contact', function(req, res) {
