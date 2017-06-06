@@ -88,52 +88,55 @@ app.post('/contact', function(req, res) {
 		oauth2 : {
 			clientId : SF_CLIENT_ID,
 			clientSecret : SF_CLIENT_SECRET,
-			redirectUri : ''
+			redirectUri : `https://salesforce-slack-connect.herokuapp.com/refreshedOauthToken`
 		},
 		instanceUrl : SF_LOGIN_URL,
 		accessToken : slackConnections[slackUserId].access_token,
 		refreshToken : slackConnections[slackUserId].refresh_token
 	});
+	
 	conn.on('refresh', function(accessToken, resp) {
-  			
+  				
   	});
   	
-  	let query = "Select Id, Name, Account.Name, Phone from Contact where Name Like '%" + req.body.text + "%'";
-  	console.log('Query', query)
+  	app.get('/refreshedOauthToken', function(oAuthReq, oAuthRes){
+  		let query = "Select Id, Name, Account.Name, Phone from Contact where Name Like '%" + req.body.text + "%'";
+	  	console.log('Query', query)
+	  	conn.query(query)
+	  	    .on("record", function(record){
+	  	    	let fields = [];
+	  	    	fields.push({
+	  	    		'title': 'Name', 
+	  	    		value: record.Name, 
+	  	    		short: true
+	  	    	});
+	  	    	fields.push({
+	  	    		'title': 'Account Name', 
+	  	    		value: (record.Account) ? record.Account.Name : '',
+	  	    		short: true
+	  	    	});
+	  	    	fields.push({
+	  	    		'title': 'Phone', 
+	  	    		value: record.Phone, 
+	  	    		short: true
+	  	    	});
+	  	    	records.push({
+	  	    		color: "#A094ED",
+	  	    		fields: fields
+	  	    	});
+	  	    })
+	  	    .on("end", function(){
+	  	    	res.json({text: "Contacts matching " , attachments: records})
+	  	    })
+	  	    .on("error", function(err) {
+	    		res.send({text: err});
+	  		})
+	  	    .run({ 
+	  	    	autoFetch : true, 
+	  	    	maxFetch : 4000 
+	  	    });
+  	});
   	
-  	conn.query(query)
-  	    .on("record", function(record){
-  	    	let fields = [];
-  	    	fields.push({
-  	    		'title': 'Name', 
-  	    		value: record.Name, 
-  	    		short: true
-  	    	});
-  	    	fields.push({
-  	    		'title': 'Account Name', 
-  	    		value: (record.Account) ? record.Account.Name : '',
-  	    		short: true
-  	    	});
-  	    	fields.push({
-  	    		'title': 'Phone', 
-  	    		value: record.Phone, 
-  	    		short: true
-  	    	});
-  	    	records.push({
-  	    		color: "#A094ED",
-  	    		fields: fields
-  	    	});
-  	    })
-  	    .on("end", function(){
-  	    	res.json({text: "Contacts matching '" , attachments: records})
-  	    })
-  	    .on("error", function(err) {
-    		res.send({text: err});
-  		})
-  	    .run({ 
-  	    	autoFetch : true, 
-  	    	maxFetch : 4000 
-  	    });
 
 });
 
@@ -141,78 +144,41 @@ app.listen(app.get('port'), function () {
   console.log('Example app listening on port 3000!')
 });
 
+/*let sfrequest = (oauth, path, options) => new Promise((resolve, reject) => {
 
+    if (!oauth || (!oauth.access_token && !oauth.refresh_token)) {
+        reject({code: 401});
+        return;
+    }
 
+    options = options || {};
 
+    options.method = options.method || 'GET';
 
+    if (path.charAt(0) !== '/') {
+        path = '/' + options.path;
+    }
 
+    options.url = oauth.instance_url + path;
 
-/*
-let connection = {};
+    options.headers = options.headers || {};
 
-if(!SF_REFRESH_TOKEN || !SF_ACCESS_TOKEN) {
-	
-	let aouth2 = new sf.OAuth2({
-		clientId: SF_CLIENT_ID,
-		clientSecret: SF_CLIENT_SECRET,
-		redirectUri : ''
-	});
+    options.headers["Accept"]= "application/json";
+    options.headers["Authorization"] = "Bearer " + oauth.access_token;
 
-	app.get('/oauth2/auth', function(req, res){
-		res.redirect(aouth2.getAuthorizationUrl({scope: ''}))
-	});
+    request(options, function (error, response, body) {
+        if (error) {
+            console.log(error);
+            if (response.statusCode === 401) {
+                // Could implement refresh token and retry logic here
+                reject({code: 401});
+            } else {
+                reject(error);
+            }
+        } else {
+            resolve(body);
+        }
+    });
 
-	app.get('/oauth2/callback', function(req, res) {
-	  let conn = new sf.Connection({ oauth2 : oauth2 });
-	  connection = conn;
-	  let code = req.param('code');
-  		conn.authorize(code, function(err, userInfo) {
-    		if (err) { 
-    			return console.error(err); 
-    		}
-    		process.env.SF_REFRESH_TOKEN  = conn.refreshToken;
-			process.env.SF_ACCESS_TOKEN = conn.refreshToken;    
-	  	});
-	});
-} else {
-	let conn = new jsforce.Connection({
-		oauth2: {
-			clientId: SF_CLIENT_ID,
-			clientSecret: SF_CLIENT_SECRET,
-			redirectUri: ''
-		},
-		instanceUrl: SF_LOGIN_URL,
-		accessToken: SF_ACCESS_TOKEN, 
-		refreshToken: SF_REFRESH_TOKEN
-	});
-	conn.on('refresh', function(accessToken, res) {
-		process.env.SF_REFRESH_TOKEN = res;
-		process.env.SF_ACCESS_TOKEN = accessToken;
-	});
-	connection = conn;
-}*/
-
-/*app.enable('trust proxy');
-app.set('port', process.env.PORT || 5000);
-app.use('/', express.static(__dirname + '/www'));
-app.use(bodyParser.urlencoded({extended: true}));    
+});
 */
-/*app.post('/contact', function(req, res){
-	var records = [];
-	var query = connection.query("Select Id, Name from Contact where Name Like '%" + req.body.text + "%'")
-			   .on('record',function(record){
-			   		records.push(record);
-				})
-			   .on('end', function(){
-			   		console.log('query', query.totalSize);
-			   		console.log('query', query.totalFetched);
-			   })
-			   .on('err', function(){
-			   		console.log('err', err);
-			   })
-			   .run({
-			   		autoFetch: true,
-			   		maxFetch: 4000
-			   })
-	console.log('dddddddd', req.body.text);		   
-}); */
