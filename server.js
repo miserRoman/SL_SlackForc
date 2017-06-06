@@ -104,10 +104,9 @@ app.post('/contact', function(req, res) {
 			clientSecret : SF_CLIENT_SECRET,
 			redirectUri : ''
 		},
-		loginUrl: slackConnections[slackUserId].instance_url,
 		accessToken: slackConnections[slackUserId].access_token,
 		refreshToken: slackConnections[slackUserId].refresh_token,
-		instanceUrl: SF_LOGIN_URL,
+		instanceUrl: slackConnections[slackUserId].instance_url,
 		id: slackConnections[slackUserId].id
   	});
   	
