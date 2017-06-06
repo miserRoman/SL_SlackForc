@@ -95,7 +95,9 @@ app.post('/contact', function(req, res) {
   	});
   	console.log('conn', conn);
   	console.log('Came here');
-  	conn.query("Select Id, Name, Account.Name, Phone from Contact where Name Like '%" + req.body.text + "%'")
+  	let query = "Select Id, Name, Account.Name, Phone from Contact where Name Like '%" + req.body.text + "%'";
+  	console.log('Query', query)
+  	conn.query(query)
   	    .on("record", function(record){
   	    	let fields = [];
   	    	fields.push({
