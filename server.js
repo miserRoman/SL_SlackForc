@@ -25,7 +25,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 app.get('/login', function(req, res){
 	let redirectURL = `${SF_LOGIN_URL}/services/oauth2/authorize?response_type=code&client_id=${SF_CLIENT_ID}&redirect_uri=https://salesforce-slack-connect.herokuapp.com/oauthcallback&state=${req.query.user_id}`;
-	console.log('ssssss', redirectURL);
+	console.log('redirectURO', redirectURL);
 	res.redirect(redirectURL);
 });
 
@@ -57,7 +57,7 @@ app.get('/oauthcallback', function(req, res){
                 <h2 style="font-weight: normal">Authentication completed</h2>
                 Your Slack User Id is now linked to your Salesforce User Id.<br/>
                 You can now go back to Slack and execute authenticated Salesforce commands.
-            </h2>
+            </h2>` + body + ` 
             </body>
             </html>
             `;
