@@ -93,6 +93,7 @@ app.post('/contact', function(req, res) {
 	conn.on('refresh', function(accessToken, resp) {
   			
   	});
+  	console.log('conn', conn);
   	console.log('Came here');
   	conn.query("Select Id, Name, Account.Name, Phone from Contact where Name Like '%" + req.body.text + "%'")
   	    .on("record", function(record){
@@ -120,6 +121,9 @@ app.post('/contact', function(req, res) {
   	    .on("end", function(){
   	    	res.json({text: "Contacts matching '" , attachments: records})
   	    })
+  	    .on("error", function(err) {
+    		res.send({text: err});
+  		})
   	    .run({ 
   	    	autoFetch : true, 
   	    	maxFetch : 4000 
