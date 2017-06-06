@@ -30,7 +30,7 @@ app.get('/login', function(req, res){
 });
 
 app.get('/oauthcallback', function(req, res){
-	console.log('ssssssss', res);
+	console.log('aaaaaaaa', res);
 	let slackUserId = req.query.state;
 	let options = {
         url: `${SF_LOGIN_URL}/services/oauth2/token`,
@@ -48,7 +48,7 @@ app.get('/oauthcallback', function(req, res){
             return res.send("error");
         }
         console.log('responsehere ', JSON.parse(body));
-        mappings[slackUserId] = JSON.parse(body);
+        slackConnections[slackUserId] = JSON.parse(body);
         let html = `
             <html>
             <body style="text-align:center;padding-top:100px">
@@ -64,7 +64,6 @@ app.get('/oauthcallback', function(req, res){
         res.send({text: 'aligned!'});
     });
 });
-
 
 app.post('/contact', function(req, res) {
 	res.send({text:'dumb'});
