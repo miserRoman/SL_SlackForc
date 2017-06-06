@@ -29,7 +29,7 @@ app.get('/login', function(req, res){
 	console.log('Client id', SF_CLIENT_ID);
 	let redirectURL = `${SF_LOGIN_URL}/services/oauth2/authorize?response_type=code&client_id=${SF_CLIENT_ID}&redirect_uri=https://salesforce-slack-connect.herokuapp.com/oauthcallback&state=${req.query.user_id}`;
 	console.log('redirectURL', redirectURL);
-	/*res.redirect(`${SF_LOGIN_URL}/services/oauth2/authorize?response_type=code&client_id=${SF_CLIENT_ID}&redirect_uri=https://salesforce-slack-connect.herokuapp.com/oauthcallback&state=${req.query.user_id}`);*/
+	res.redirect(redirectURL);
 });
 
 app.get('/oauthcallback', function(req, res){
