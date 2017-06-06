@@ -61,7 +61,7 @@ app.get('/oauthcallback', function(req, res){
             </body>
             </html>
             `;
-        res.send(html);
+        res.send({text: 'aligned!'});
     });
 });
 
