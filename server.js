@@ -56,14 +56,17 @@ app.get('/oauthcallback', function(req, res){
         slackConnections[slackUserId] = JSON.parse(body);
         let html = `
             <html>
-            <body style="text-align:center;padding-top:100px">
-            <img src="images/linked.png"/>
-            <div style="font-family:'Helvetica Neue';font-weight:300;color:#444">
-                <h2 style="font-weight: normal">Authentication completed</h2>
-                Your Slack User Id is now linked to your Salesforce User Id.<br/>
-                You can now go back to Slack and execute authenticated Salesforce commands.
-            </h2>` + body + ` 
-            </body>
+	            <body style="text-align:center;padding-top:100px">
+		            <div style="font-family:'Helvetica Neue';font-weight:300;color:#444">
+		                <h2 style="font-weight: normal">
+		                	Authentication completed
+		                </h2>
+		                <h3>
+		                	Your Slack User Id is now linked to your Salesforce User Id.<br/>
+		                	You can now go back to Slack and execute authenticated Salesforce commands.
+		            	</h3>
+		            </div>	
+	            </body>
             </html>
             `;
         res.send(html);
