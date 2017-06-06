@@ -23,13 +23,12 @@ app.set('port', process.env.PORT || 5000);
 app.use('/', express.static(__dirname + '/www'));
 app.use(bodyParser.urlencoded({extended: true}));
 
-
-
 app.get('/login', function(req, res){
 	res.send(`Visit this URL to login to Salesforce: https://${req.hostname}/login/` + req.query.user_id);
-	/*res.statusCode = 302;
-	res.setHeader("Location", `${SF_LOGIN_URL}/services/oauth2/authorize?response_type=code&client_id=${SF_CLIENT_ID}&redirect_uri=https://salesforce-slack-connect.herokuapp.com/oauthcallback&state=${req.query.user_id}`);
-	res.end();*/
+});
+
+app.get('/login/:slackUserId', function(req, res){
+	res.redirect(`${SF_LOGIN_URL}/services/oauth2/authorize?response_type=code&client_id=${SF_CLIENT_ID}&redirect_uri=https://salesforce-slack-connect.herokuapp.com/oauthcallback&state=${req.query.user_id}`);
 });
 
 app.get('/oauthcallback', function(req, res){
