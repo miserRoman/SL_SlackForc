@@ -140,6 +140,7 @@ app.post('/contact', function(req, res) {
   	    	res.json({text: "Contacts matching " , attachments: records})
   	    })
   	    .on("error", function(err) {
+  	    	console.log('err', err);
     		res.send({text: err});
   		})
   	    .run({ 
