@@ -7,8 +7,6 @@ let SF_CLIENT_SECRET = process.env.SF_CLIENT_SECRET;
 let SF_LOGIN_URL = process.env.SF_LOGIN_URL;
 let SF_REFRESH_TOKEN = process.env.SF_REFRESH_TOKEN;
 let SF_ACCESS_TOKEN = process.env.SF_ACCESS_TOKEN;
-let SF_USER_NAME = process.env.SF_USER_NAME;
-let SF_PASSWORD = process.env.SF_PASSWORD;
 
 let express = require('express');
 let app = express();
@@ -43,21 +41,9 @@ app.get('/login/:slackUserId', function(req, res){
 });
 
 app.get('/oauthcallback', function(req, res){
-	/*let slackUserId = req.query.state;
-	var conn = new sf.Connection({ oauth2 : oauth2 });
-	var code = req.param('code');
-	conn.authorize(code, function(err, userInfo) {
-		if (err) { return console.error(err); }
-		slackConnections[slackUserId] = conn;
-		console.log(conn.accessToken);
-		console.log(conn.refreshToken);
-		console.log(conn.instanceUrl);
-		console.log("User ID: " + userInfo.id);
-		console.log("Org ID: " + userInfo.organizationId);
-	});*/
 
 	let slackUserId = req.query.state;
-	
+
 	let options = {
         url: `${SF_LOGIN_URL}/services/oauth2/token`,
         qs: {
