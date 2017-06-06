@@ -13,7 +13,7 @@ let SF_PASSWORD = process.env.SF_PASSWORD;
 let express = require('express');
 let app = express();
 let bodyParser = require('body-parser');
-/*let jsforce = require('jsforce');*/
+let jsforce = require('jsforce');
 let request = require('request');
 
 let slackConnections = {};
@@ -32,7 +32,6 @@ app.get('/login/:slackUserId', function(req, res){
 });
 
 app.get('/oauthcallback', function(req, res){
-	console.log('aaaaaaaa', res);
 	let slackUserId = req.query.state;
 	let options = {
         url: `${SF_LOGIN_URL}/services/oauth2/token`,
@@ -67,9 +66,9 @@ app.get('/oauthcallback', function(req, res){
 });
 
 app.post('/contact', function(req, res) {
-	console.log('userId', slackConnections);
-	console.log('vvvvv', slackConnections[req.query.user_id]);
-	res.send({text:'dumb'});
+	/*console.log('userId', slackConnections);
+	console.log('req', req);
+	res.send({text:'dumb'});*/
 	/*let records = [];
 
 	let conn = new jsforce.Connection({
@@ -110,6 +109,15 @@ app.post('/contact', function(req, res) {
 	  	    });
 	});*/
 
+	/*let conn = new jsforce.Connection({
+		oauth2 : {
+
+		},
+		instanceUrl :
+		accessToken :
+		refreshToken 
+	});*/
+	console.log('dddd', req);
 });
 
 app.listen(app.get('port'), function () {
