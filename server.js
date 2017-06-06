@@ -55,6 +55,9 @@ app.get('/oauthcallback', function(req, res){
 		console.log("User ID: " + userInfo.id);
 		console.log("Org ID: " + userInfo.organizationId);
 	});*/
+
+	let slackUserId = req.query.state;
+	
 	let options = {
         url: `${SF_LOGIN_URL}/services/oauth2/token`,
         qs: {
