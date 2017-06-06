@@ -102,9 +102,9 @@ app.post('/contact', function(req, res) {
 	  	oauth2 : {
 			clientId : SF_CLIENT_ID,
 			clientSecret : SF_CLIENT_SECRET,
-			redirectUri : '',
-			loginUrl: SF_LOGIN_URL
+			redirectUri : ''
 		},
+		loginUrl: SF_LOGIN_URL,
 		accessToken: slackConnections[slackUserId].access_token,
 		refreshToken: slackConnections[slackUserId].refresh_token,
 		instanceUrl: SF_LOGIN_URL,
