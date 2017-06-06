@@ -47,6 +47,7 @@ app.get('/oauthcallback', function(req, res){
             console.log(error);
             return res.send("error");
         }
+        console.log('response', JSON.parse(body));
         mappings[slackUserId] = JSON.parse(body);
         let html = `
             <html>
