@@ -82,23 +82,6 @@ app.post('/contact', function(req, res) {
 		res.send({text: 'Please authenticate with /sfdclogin commmand first'});
 	}
 
-	/*console.log('access Token', slackConnections[slackUserId].access_token);
-	console.log('refresh Token', slackConnections[slackUserId].refresh_token);*/
-
-
-	/*let conn = new jsforce.Connection({
-		oauth2 : {
-			clientId : SF_CLIENT_ID,
-			clientSecret : SF_CLIENT_SECRET,
-			redirectUri : ''
-		},
-		instanceUrl : SF_LOGIN_URL,
-		accessToken : slackConnections[slackUserId].access_token,
-		refreshToken : slackConnections[slackUserId].refresh_token
-	});
-	conn.on('refresh', function(accessToken, resp) {
-  				
-  	});*/
   	let conn = new jsforce.Connection({
 	  	oauth2 : {
 			clientId : SF_CLIENT_ID,
@@ -115,7 +98,7 @@ app.post('/contact', function(req, res) {
   		slackConnections[slackUserId].access_token = accessToken;				
   	});
 
-  	let query = "Select Id, Name, Account.Name, Phone from Contact where Name Like '%" + req.body.text + "%'";
+  	let query = "Select Id, Name, Account.Name, Phone from Contact where Name Like '%" + req.body.text + "%' LIMIT 10";
   	console.log('Query', query)
   	
   	conn.query(query)
