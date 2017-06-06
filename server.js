@@ -13,7 +13,7 @@ let SF_PASSWORD = process.env.SF_PASSWORD;
 let express = require('express');
 let app = express();
 let bodyParser = require('body-parser');
-let jsforce = require('jsforce');
+/*let jsforce = require('jsforce');*/
 let request = require('request');
 
 let slackConnections = {};
@@ -23,9 +23,7 @@ app.set('port', process.env.PORT || 5000);
 app.use('/', express.static(__dirname + '/www'));
 app.use(bodyParser.urlencoded({extended: true}));
 
-app.get('/login', function(req, res){
-	/*let redirectURL = `${SF_LOGIN_URL}/services/oauth2/authorize?response_type=code&client_id=${SF_CLIENT_ID}&redirect_uri=https://salesforce-slack-connect.herokuapp.com/oauthcallback&state=${req.query.user_id}`;
-	console.log('redirectURO', redirectURL);*/
+app.post('/login', function(req, res){
 	res.redirect(`${SF_LOGIN_URL}/services/oauth2/authorize?response_type=code&client_id=${SF_CLIENT_ID}&redirect_uri=https://salesforce-slack-connect.herokuapp.com/oauthcallback&state=${req.query.user_id}`);
 });
 
