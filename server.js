@@ -99,11 +99,15 @@ app.post('/contact', function(req, res) {
   				
   	});*/
   	let conn = new jsforce.Connection({
-      oauth2: slackConnections[slackUserId],
-      accessToken: slackConnections[slackUserId].access_token,
-      refreshToken: slackConnections[slackUserId].refresh_token,
-      instanceUrl: SF_LOGIN_URL,
-      id: slackConnections[slackUserId].id
+	  	oauth2 : {
+			clientId : SF_CLIENT_ID,
+			clientSecret : SF_CLIENT_SECRET,
+			redirectUri : ''
+		},
+		accessToken: slackConnections[slackUserId].access_token,
+		refreshToken: slackConnections[slackUserId].refresh_token,
+		instanceUrl: SF_LOGIN_URL,
+		id: slackConnections[slackUserId].id
   	});
   	
   	let query = "Select Id, Name, Account.Name, Phone from Contact where Name Like '%" + req.body.text + "%'";
