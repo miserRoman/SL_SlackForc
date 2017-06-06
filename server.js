@@ -73,6 +73,8 @@ app.post('/contact', function(req, res) {
 		res.send({text: 'Please authenticate with /sfdclogin commmand first'});
 	}
 
+	console.log('connection', slackConnections[slackUserId]);
+
 	let conn = new jsforce.Connection({
 		oauth2 : {
 			clientId : SF_CLIENT_ID,
