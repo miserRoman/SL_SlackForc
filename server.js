@@ -117,7 +117,51 @@ app.post('/contact', function(req, res) {
 		accessToken :
 		refreshToken 
 	});*/
-	console.log('dddd', req);
+
+	let slackUserId = req.body.user_id;
+	let conn = new jsforce.Connection({
+		oauth2 : {
+			clientId : SF_CLIENT_ID,
+			clientSecret : SF_CLIENT_SECRET,
+			redirectUri : ''
+		},
+		instanceUrl : SF_LOGIN_URL,
+		accessToken : slackConnections[slackUserId].access_token,
+		refreshToken : slackConnections[slackUserId].refresh_token
+	});
+	conn.on('refresh', function(accessToken, res) {
+  			
+  	});
+  	conn.query("Select Id, Name, Account.Name, Phone from Contact where Name Like '%" + req.body.text + "%'")
+  	    .on("record", function(record){
+  	    	let fields = [];
+  	    	fields.push({
+  	    		'title': 'Name', 
+  	    		value: record.Name, 
+  	    		short: true
+  	    	});
+  	    	fields.push({
+  	    		'title': 'Account Name', 
+  	    		value: (record.Account) ? record.Account.Name : '',
+  	    		short: true
+  	    	});
+  	    	fields.push({
+  	    		'title': 'Phone', 
+  	    		value: record.Phone, 
+  	    		short: true
+  	    	});
+  	    	records.push({
+  	    		color: "#A094ED",
+  	    		fields: fields
+  	    	});
+  	    })
+  	    .on("end", function(){
+  	    	res.json({text: "Contacts matching '" , attachments: records})
+  	    })
+  	    .run({ 
+  	    	autoFetch : true, 
+  	    	maxFetch : 4000 
+  	    });
 });
 
 app.listen(app.get('port'), function () {
