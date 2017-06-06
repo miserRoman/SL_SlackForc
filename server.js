@@ -13,7 +13,7 @@ let SF_PASSWORD = process.env.SF_PASSWORD;
 let express = require('express');
 let app = express();
 let bodyParser = require('body-parser');
-/*let jsforce = require('jsforce');*/
+let jsforce = require('jsforce');
 let request = require('request');
 
 let slackConnections = {};
