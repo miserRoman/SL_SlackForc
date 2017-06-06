@@ -16,7 +16,7 @@ let bodyParser = require('body-parser');
 let jsforce = require('jsforce');
 let request = require('request');
 
-let connection = require('./salesforceOauth');
+/*let connection = require('./salesforceOauth');*/
 
 let slackConnections = {};
 
@@ -25,16 +25,17 @@ app.set('port', process.env.PORT || 5000);
 app.use('/', express.static(__dirname + '/www'));
 app.use(bodyParser.urlencoded({extended: true}));
 
-app.get('/login', connection.loginLink);
+/*app.get('/login', connection.loginLink);
 app.get('/login/:slackUserId', connection.oAuthLink);
+*/
 
-/*app.get('/login', function(req, res){
+app.get('/login', function(req, res){
 	res.send(`Visit this URL to login to Salesforce: https://${req.hostname}/login/` + req.query.user_id);
-});*/
+});
 
-/*app.get('/login/:slackUserId', function(req, res){
+app.get('/login/:slackUserId', function(req, res){
 	res.redirect(`${SF_LOGIN_URL}/services/oauth2/authorize?response_type=code&client_id=${SF_CLIENT_ID}&redirect_uri=https://salesforce-slack-connect.herokuapp.com/oauthcallback&state=${req.params.slackUserId}`);
-});*/
+});
 
 app.get('/oauthcallback', function(req, res){
 	let slackUserId = req.query.state;
