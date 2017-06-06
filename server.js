@@ -67,11 +67,12 @@ app.get('/oauthcallback', function(req, res){
 
 app.post('/contact', function(req, res) {
 	
+	let slackUserId = req.body.user_id;
+
 	if( !slackConnections[slackUserId] ) {
 		res.send({text: 'Please authenticate with /sfdclogin commmand first'});
 	}
 
-	let slackUserId = req.body.user_id;
 	let conn = new jsforce.Connection({
 		oauth2 : {
 			clientId : SF_CLIENT_ID,
