@@ -15,6 +15,7 @@ let app = express();
 let bodyParser = require('body-parser');
 let jsforce = require('jsforce');
 let request = require('request');
+/*let salesforce = require('salesforceOauth');*/
 
 let slackConnections = {};
 
@@ -77,7 +78,7 @@ app.post('/contact', function(req, res) {
 		res.send({text: 'Please authenticate with /sfdclogin commmand first'});
 	}
 
-	console.log('connection', slackConnections[slackUserId]);
+	/*console.log('connection', slackConnections[slackUserId]);*/
 
 	let conn = new jsforce.Connection({
 		oauth2 : {
@@ -92,6 +93,7 @@ app.post('/contact', function(req, res) {
 	conn.on('refresh', function(accessToken, resp) {
   			
   	});
+  	console.log('Came here');
   	conn.query("Select Id, Name, Account.Name, Phone from Contact where Name Like '%" + req.body.text + "%'")
   	    .on("record", function(record){
   	    	let fields = [];
@@ -122,6 +124,7 @@ app.post('/contact', function(req, res) {
   	    	autoFetch : true, 
   	    	maxFetch : 4000 
   	    });
+
 });
 
 app.listen(app.get('port'), function () {
