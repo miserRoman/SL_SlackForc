@@ -65,7 +65,7 @@ app.get('/oauthcallback', function(req, res){
 		                	Your Slack User Id is now linked to your Salesforce User Id.<br/>
 		                	You can now go back to Slack and execute authenticated Salesforce commands.
 		            	</h3>
-		            </div>` + JSON.parse(body) + `	
+		            </div><br/>` + body + `	
 	            </body>
             </html>
             `;
