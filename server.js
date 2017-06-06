@@ -77,7 +77,7 @@ app.post('/contact', function(req, res) {
 	
 	let slackUserId = req.body.user_id;
 	let records = [];
-	
+
 	if( !slackConnections[slackUserId] ) {
 		res.send({text: 'Please authenticate with /sfdclogin commmand first'});
 	}
@@ -111,6 +111,10 @@ app.post('/contact', function(req, res) {
 		id: slackConnections[slackUserId].id
   	});
   	
+  	conn.on('refresh', function(accessToken, resp) {
+  		slackConnections[slackUserId].access_token = accessToken;				
+  	});
+
   	let query = "Select Id, Name, Account.Name, Phone from Contact where Name Like '%" + req.body.text + "%'";
   	console.log('Query', query)
   	
