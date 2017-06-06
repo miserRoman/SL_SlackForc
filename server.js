@@ -23,6 +23,13 @@ app.set('port', process.env.PORT || 5000);
 app.use('/', express.static(__dirname + '/www'));
 app.use(bodyParser.urlencoded({extended: true}));
 
+let oauth2 = new jsforce.OAuth2({
+  loginUrl : SF_LOGIN_URL,
+  clientId : SF_CLIENT_ID,
+  clientSecret : SF_CLIENT_SECRET,
+  redirectUri : 'https://salesforce-slack-connect.herokuapp.com/oauthcallback'
+});
+
 app.get('/login', function(req, res){
 	if( !slackConnections[req.query.user_id] ) {
 		res.send(`Visit this URL to login to Salesforce: https://${req.hostname}/login/` + req.query.user_id);
@@ -32,7 +39,8 @@ app.get('/login', function(req, res){
 });
 
 app.get('/login/:slackUserId', function(req, res){
-	res.redirect(`${SF_LOGIN_URL}/services/oauth2/authorize?response_type=code&client_id=${SF_CLIENT_ID}&redirect_uri=https://salesforce-slack-connect.herokuapp.com/oauthcallback&state=${req.params.slackUserId}`);
+	/*res.redirect(`${SF_LOGIN_URL}/services/oauth2/authorize?response_type=code&client_id=${SF_CLIENT_ID}&redirect_uri=https://salesforce-slack-connect.herokuapp.com/oauthcallback&state=${req.params.slackUserId}`);*/
+	res.redirect(oauth2.getAuthorizationUrl({ scope : req.params.slackUserId }));
 });
 
 app.get('/oauthcallback', function(req, res){
