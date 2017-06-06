@@ -64,7 +64,7 @@ app.get('/oauthcallback', function(req, res){
 
 
 app.post('/contact', function(req, res) {
-	res.send({text:slackConnections[req.user_id]});
+	res.send({text:'dumb'});
 	/*let records = [];
 
 	let conn = new jsforce.Connection({
