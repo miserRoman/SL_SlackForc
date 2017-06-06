@@ -81,7 +81,8 @@ app.post('/contact', function(req, res) {
 		res.send({text: 'Please authenticate with /sfdclogin commmand first'});
 	}
 
-	console.log('connection', slackConnections[slackUserId]);
+	console.log('access Token', slackConnections[slackUserId].access_token);
+	console.log('refresh Token', slackConnections[slackUserId].refresh_token);
 
 	let conn = new jsforce.Connection({
 		oauth2 : {
@@ -96,10 +97,10 @@ app.post('/contact', function(req, res) {
 	conn.on('refresh', function(accessToken, resp) {
   			
   	});
-  	console.log('conn', conn);
-  	console.log('Came here');
+  	
   	let query = "Select Id, Name, Account.Name, Phone from Contact where Name Like '%" + req.body.text + "%'";
   	console.log('Query', query)
+  	
   	conn.query(query)
   	    .on("record", function(record){
   	    	let fields = [];
