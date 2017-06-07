@@ -72,7 +72,7 @@ app.post('/contact', function(req, res) {
 	  	}
 	  	
 	  	let allFields = ['Id', 'Recordtype.DeveloperName'];
-	  	allFields = allFields.concat(commonFields);
+	  	allFields = allFields.concat(Object.keys(commonFields));
 	  	for( let recordtype in fieldMappings) {
 	  		allFields = allFields.concat(Object.keys(fieldMappings[recordtype]));
 	  	}
