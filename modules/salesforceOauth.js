@@ -13,7 +13,7 @@ exports.loginLink = (req, res) => {
 	if( !slackConnections[req.query.user_id] ) {
         res.send(`Visit this URL to login to Salesforce: https://${req.hostname}/login/` + req.query.user_id);
     } else {
-        res.send({text: 'Already authenticated!!'});
+        res.send({text: '*Already authenticated!!*'});
     }
 }
 
