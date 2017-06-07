@@ -26,7 +26,7 @@ app.get('/login/:slackUserId', salesforce.oAuthLink);
 app.get('/oauthcallback', salesforce.oAuthCallback);
 
 app.post('/contact', function(req, res) {
-	
+	/**/
 	let slackUserId = req.body.user_id;
 	let records = [];
 
@@ -89,9 +89,7 @@ app.post('/contact', function(req, res) {
 
 	} else {
 		res.send({text: 'Please authenticate with /sfdclogin commmand first'});
-	}
-
-  	
+	} 	
 });
 
 app.listen(app.get('port'), function () {
