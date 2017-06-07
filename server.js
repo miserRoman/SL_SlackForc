@@ -30,10 +30,10 @@ app.post('/contact', function(req, res) {
 	let slackUserId = req.body.user_id;
 	let records = [];
 
-	let slackConnection = salesforce.getSlackUser(slackUserId);
-
-	if(slackConnection) {
-		let conn = new jsforce.Connection({
+	/*let slackConnection = salesforce.getSlackUser(slackUserId);*/
+	let connection = salesforce.getOauthConnection(slackUserId);
+	if(connection) {
+		/*let conn = new jsforce.Connection({
 		  	oauth2 : {
 				clientId : SF_CLIENT_ID,
 				clientSecret : SF_CLIENT_SECRET,
@@ -48,7 +48,7 @@ app.post('/contact', function(req, res) {
 	  	conn.on('refresh', function(accessToken, resp) {
 	  		slackConnection.access_token = accessToken;				
 	  	});
-
+*/
 	  	let fieldMappings = {
 	  		'Executive' : {
 	  			'GTCR_Vertical__c' : 'GTCR Vertical',

@@ -59,4 +59,29 @@ exports.oAuthCallback = (req, res) => {
     });
 }
 
+exports.getOauthConnection = (slackUserId) => {
+    
+    let connection = slackConnections[slackUserId];
+    
+    if( slackConnections[slackUserId] ) {
+        let conn = new jsforce.Connection({
+            oauth2 : {
+                clientId : SF_CLIENT_ID,
+                clientSecret : SF_CLIENT_SECRET,
+                redirectUri : ''
+            },
+            accessToken: connection.access_token,
+            refreshToken: connection.refresh_token,
+            instanceUrl: connection.instance_url,
+            id: connection.id
+        });
+        
+        conn.on('refresh', function(accessToken, resp) {
+            connection.access_token = accessToken;             
+        });
+
+        return conn;
+    }    
+}
+
 exports.getSlackUser = (slackUserId) => slackConnections[slackUserId];
