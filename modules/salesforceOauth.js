@@ -58,4 +58,4 @@ exports.oAuthCallback = (req, res) => {
     });
 }
 
-exports.getSlackUser = (slackUserId) => slackConnection[slackUserId];
+exports.getSlackUser = (slackUserId) => slackConnections[slackUserId];
