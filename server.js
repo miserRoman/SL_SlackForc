@@ -29,54 +29,15 @@ app.post('/contact', function(req, res) {
 	
 	let slackUserId = req.body.user_id;
 	let records = [];
-
-	/*let slackConnection = salesforce.getSlackUser(slackUserId);*/
 	let connection = salesforce.getOauthConnection(slackUserId);
 	if(connection) {
-		/*let conn = new jsforce.Connection({
-		  	oauth2 : {
-				clientId : SF_CLIENT_ID,
-				clientSecret : SF_CLIENT_SECRET,
-				redirectUri : ''
-			},
-			accessToken: slackConnection.access_token,
-			refreshToken: slackConnection.refresh_token,
-			instanceUrl: slackConnection.instance_url,
-			id: slackConnection.id
-  		});
-  	
-	  	conn.on('refresh', function(accessToken, resp) {
-	  		slackConnection.access_token = accessToken;				
-	  	});
-*/
-	  	let fieldMappings = {
-	  		'Executive' : {
-	  			'GTCR_Vertical__c' : 'GTCR Vertical',
-	  			'Industry__c' : 'Industry',
-	  			'Priority__c' : 'Priority',
-	  			'Priority_Tier__c' : 'Priority Tier',
-	  			'Targeted_Role__c' : 'Targeted Role',
-	  			'Relationship_Manager__r.Name' : 'Relationship Manager' 
-	  		}, 
-	  		'Intermediary': {
-	  			'Verticals_Covered__c' : 'Verticals Covered',
-	  			'Intermediary_Type__c' : 'Intermediary Type',
-	  			'Banker_Type__c' : 'Banker Type'
-	  		}
-	  	}			  
-	  	let commonFields = {
-	  		'Name' : 'Name',
-	  		'Recordtype.Name' : 'Recordtype',
-	  		'Title' : 'Title',
-	  		'Account.Name': 'Company Name'
-	  	}
+		
+	  	let allFields = ['Id', 'Recordtype.DeveloperName', 
+	  		'Name', 'Recordtype.Name', 'Title', 'Account.Name',
+	  		'GTCR_Vertical__c', 'Industry__c', 'Priority__c', 'Priority_Tier__c', 'Targeted_Role__c', 'Relationship_Manager__r.Name',
+	  		'Verticals_Covered__c', 'Intermediary_Type__c', 'Banker_Type__c'
+	  	];
 	  	
-	  	let allFields = ['Id', 'Recordtype.DeveloperName'];
-	  	allFields = allFields.concat(Object.keys(commonFields));
-	  	for( let recordtype in fieldMappings) {
-	  		allFields = allFields.concat(Object.keys(fieldMappings[recordtype]));
-	  	}
-
 	  	let query = "Select " + allFields.join(',') + " from Contact where Name Like '%" + req.body.text + "%' LIMIT 10";
 	  	console.log('Query', query)
 	  	
