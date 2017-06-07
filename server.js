@@ -9,7 +9,7 @@ let SF_LOGIN_URL = process.env.SF_LOGIN_URL;
 let express = require('express');
 let app = express();
 let bodyParser = require('body-parser');
-let jsforce = require('jsforce');
+
 let request = require('request');
 
 let salesforce = require('./modules/salesforceOauth');
@@ -80,7 +80,7 @@ app.post('/contact', function(req, res) {
 	  	let query = "Select " + allFields.join(',') + " from Contact where Name Like '%" + req.body.text + "%' LIMIT 10";
 	  	console.log('Query', query)
 	  	
-	  	conn.query(query)
+	  	connection.query(query)
 	  	    .on("record", function(record){
 	  	    	let fields = [];
 	  	    	//common fields 
