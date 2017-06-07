@@ -20,14 +20,14 @@ app.enable('trust proxy');
 app.set('port', process.env.PORT || 5000);
 app.use('/', express.static(__dirname + '/www'));
 app.use(bodyParser.urlencoded({extended: true}));
-
+/*
 let oauth2 = new jsforce.OAuth2({
   loginUrl : SF_LOGIN_URL,
   clientId : SF_CLIENT_ID,
   clientSecret : SF_CLIENT_SECRET,
   redirectUri : 'https://salesforce-slack-connect.herokuapp.com/oauthcallback'
 });
-
+*/
 app.get('/login', function(req, res){
 	if( !slackConnections[req.query.user_id] ) {
 		res.send(`Visit this URL to login to Salesforce: https://${req.hostname}/login/` + req.query.user_id);
