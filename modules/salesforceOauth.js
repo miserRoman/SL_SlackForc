@@ -17,7 +17,8 @@ exports.loginLink = (req, res) => {
 }
 
 exports.oAuthLink = (req, res) => {
-	res.redirect(`${SF_LOGIN_URL}/services/oauth2/authorize?response_type=code&prompt=login&display=popup&client_id=${SF_CLIENT_ID}&redirect_uri=https://${req.hostname}/oauthcallback&state=${req.params.slackUserId}`);
+    /*&prompt=login&display=popup*/
+	res.redirect(`${SF_LOGIN_URL}/services/oauth2/authorize?response_type=code&client_id=${SF_CLIENT_ID}&redirect_uri=https://${req.hostname}/oauthcallback&state=${req.params.slackUserId}`);
 }
 
 exports.oAuthCallback = (req, res) => {
@@ -50,7 +51,7 @@ exports.oAuthCallback = (req, res) => {
                             Your Slack User Id is now linked to your Salesforce User Id.<br/>
                             You can now go back to Slack and execute authenticated Salesforce commands.
                         </h3>
-                    </div><br/>` + body + ` 
+                    </div><br/>
                 </body>
             </html>
             `;
