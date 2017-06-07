@@ -5,6 +5,7 @@ let SF_CLIENT_SECRET = process.env.SF_CLIENT_SECRET;
 let SF_LOGIN_URL = process.env.SF_LOGIN_URL;
 
 let request = require('request');
+let jsforce = require('jsforce');
 
 let slackConnections = {};
 
