@@ -1,11 +1,11 @@
 "use strict";
 
-let SLACK_LOGIN_TOKEN = process.env.SLACK_LOGIN_TOKEN;
+/*let SLACK_LOGIN_TOKEN = process.env.SLACK_LOGIN_TOKEN;
 let SLACK_LOGOUT_TOKEN = process.env.SLACK_LOGOUT_TOKEN;
 let SF_CLIENT_ID = process.env.SF_CLIENT_ID;
 let SF_CLIENT_SECRET = process.env.SF_CLIENT_SECRET;
 let SF_LOGIN_URL = process.env.SF_LOGIN_URL;
-
+*/
 let express = require('express');
 let app = express();
 let bodyParser = require('body-parser');
@@ -13,8 +13,9 @@ let bodyParser = require('body-parser');
 let request = require('request');
 
 let salesforce = require('./modules/salesforceOauth');
+let contact = require('./modules/contact');
 
-let slackConnections = {};
+/*let slackConnections = {};*/
 
 app.enable('trust proxy');
 app.set('port', process.env.PORT || 5000);
@@ -25,7 +26,9 @@ app.get('/login', salesforce.loginLink);
 app.get('/login/:slackUserId', salesforce.oAuthLink);
 app.get('/oauthcallback', salesforce.oAuthCallback);
 
-app.post('/contact', function(req, res) {
+app.post('/contact', contact.getRecords);
+
+/*app.post('/contact', function(req, res) {
 	
 	let slackUserId = req.body.user_id;
 	let records = [];
@@ -150,7 +153,7 @@ app.post('/contact', function(req, res) {
 	} else {
 		res.send({text: 'Please authenticate with /sfdclogin commmand first'});
 	} 	
-});
+});*/
 
 app.listen(app.get('port'), function () {
   console.log('Example app listening on port 3000!')
