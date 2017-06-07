@@ -4,7 +4,7 @@ let SF_CLIENT_ID = process.env.SF_CLIENT_ID;
 let SF_CLIENT_SECRET = process.env.SF_CLIENT_SECRET;
 let SF_LOGIN_URL = process.env.SF_LOGIN_URL;
 
-let slackConnection = {};
+let slackConnections = {};
 
 exports.loginLink = (req, res) => {
 	if( !slackConnections[req.query.user_id] ) {
