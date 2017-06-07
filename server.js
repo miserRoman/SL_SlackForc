@@ -92,7 +92,7 @@ app.post('/contact', function(req, res) {
 	  	    	});
 	  	    	fields.push({
     				title: 'Record Type', 
-	  	    		value: record.Recordtype.Name, 
+	  	    		value: record.RecordType.Name, 
 	  	    		short: true
 	  	    	});
 	  	    	fields.push({
