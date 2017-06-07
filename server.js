@@ -106,7 +106,7 @@ app.post('/contact', function(req, res) {
 	  	    		short: true
 	  	    	});
 	  	    	//Executive record Type
-	  	    	if( record.Recordtype.Name == 'Executive' ) {
+	  	    	if( record.RecordType.Name == 'Executive' ) {
 	  	    		fields.push({
 		  	    		'title': 'GTCR Vertical', 
 		  	    		value: record.GTCR_Vertical__c,
@@ -139,7 +139,7 @@ app.post('/contact', function(req, res) {
 	  	    		});
 	  	    	} 
 	  	    	//Intermediary Record Type
-	  	    	if( record.Recordtype.Name == 'Intermediary' ) {
+	  	    	if( record.RecordType.Name == 'Intermediary' ) {
 	  	    		fields.push({
 		  	    		'title': 'Verticals Covered', 
 		  	    		value: record.Verticals_Covered__c,
