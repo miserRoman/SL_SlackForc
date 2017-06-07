@@ -1,6 +1,6 @@
 "use strict";
 
-let salesforce = require('./modules/salesforceOauth');
+let salesforce = require('./salesforceOauth');
 
 exports.getRecords = (req, res) => {
 	let slackUserId = req.body.user_id;
