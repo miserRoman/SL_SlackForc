@@ -77,7 +77,7 @@ app.post('/contact', function(req, res) {
 	  		allFields = allFields.concat(Object.keys(fieldMappings[recordtype]));
 	  	}
 
-	  	let query = "Select " + allFields.join(',') + ", (Select Id, ) from Contact where Name Like '%" + req.body.text + "%' LIMIT 10";
+	  	let query = "Select " + allFields.join(',') + " from Contact where Name Like '%" + req.body.text + "%' LIMIT 10";
 	  	console.log('Query', query)
 	  	
 	  	conn.query(query)
@@ -88,54 +88,64 @@ app.post('/contact', function(req, res) {
 	  	    	fields.push({
     				title: '*Name*', 
 	  	    		value: record.Name, 
-	  	    		short: true
+	  	    		short: true,
+	  	    		mrkdwn: true
 	  	    	});
 	  	    	fields.push({
     				title: '*Record Type*', 
 	  	    		value: record.RecordType.Name, 
-	  	    		short: true
+	  	    		short: true,
+	  	    		mrkdwn: true
 	  	    	});
 	  	    	fields.push({
     				title: '*Title*', 
 	  	    		value: record.Title, 
-	  	    		short: true
+	  	    		short: true,
+	  	    		mrkdwn: true
 	  	    	});
 	  	    	fields.push({
 	  	    		title: '*Company Name*', 
 	  	    		value: (record.Account) ? record.Account.Name : '',
-	  	    		short: true
+	  	    		short: true,
+	  	    		mrkdwn: true
 	  	    	});
 	  	    	//Executive record Type
 	  	    	if( record.RecordType.Name == 'Executive' ) {
 	  	    		fields.push({
 		  	    		title: '*GTCR Vertical*', 
 		  	    		value: record.GTCR_Vertical__c,
-		  	    		short: true
+		  	    		short: true,
+		  	    		mrkdwn: true
 	  	    		});
 	  	    		fields.push({
 		  	    		title: '*Industry*', 
 		  	    		value: record.Industry__c,
-		  	    		short: true
+		  	    		short: true,
+		  	    		mrkdwn: true
 	  	    		});
 	  	    		fields.push({
 		  	    		title: '*Priority*', 
 		  	    		value: record.Priority__c,
-		  	    		short: true
+		  	    		short: true,
+		  	    		mrkdwn: true
 	  	    		});
 	  	    		fields.push({
 		  	    		title: '*Priority Tier*', 
 		  	    		value: record.Priority_Tier__c,
-		  	    		short: true
+		  	    		short: true,
+		  	    		mrkdwn: true
 	  	    		});
 	  	    		fields.push({
 		  	    		title: '*Targeted Role*', 
 		  	    		value: record.Targeted_Role__c,
-		  	    		short: true
+		  	    		short: true,
+		  	    		mrkdwn: true
 	  	    		});
 	  	    		fields.push({
 		  	    		title: '*Relationship Manager*', 
 		  	    		value: (record.Relationship_Manager__r) ? record.Relationship_Manager__r.Name : '',
-		  	    		short: true
+		  	    		short: true,
+		  	    		mrkdwn: true
 	  	    		});
 	  	    	} 
 	  	    	//Intermediary Record Type
@@ -143,17 +153,20 @@ app.post('/contact', function(req, res) {
 	  	    		fields.push({
 		  	    		title: '*Verticals Covered*', 
 		  	    		value: record.Verticals_Covered__c,
-		  	    		short: true
+		  	    		short: true,
+		  	    		mrkdwn: true
 	  	    		});
 	  	    		fields.push({
 		  	    		title: '*Intermediary Type*', 
 		  	    		value: record.Intermediary_Type__c,
-		  	    		short: true
+		  	    		short: true,
+		  	    		mrkdwn: true
 	  	    		});
 	  	    		fields.push({
 		  	    		title: '*Banker Type*', 
 		  	    		value: record.Banker_Type__c,
-		  	    		short: true
+		  	    		short: true,
+		  	    		mrkdwn: true
 	  	    		});
 	  	    	}
 	  	    	records.push({
