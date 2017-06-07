@@ -85,7 +85,6 @@ app.post('/contact', function(req, res) {
 	  	    	let fields = [];
 	  	    	//common fields 
 	  	    	console.log('record', record);
-	  	    	
 	  	    	fields.push({
     				title: 'Name', 
 	  	    		value: record.Name, 
