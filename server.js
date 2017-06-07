@@ -26,7 +26,7 @@ app.get('/login/:slackUserId', salesforce.oAuthLink);
 app.get('/oauthcallback', salesforce.oAuthCallback);
 
 app.post('/contact', function(req, res) {
-	/**/
+	
 	let slackUserId = req.body.user_id;
 	let records = [];
 
@@ -49,27 +49,112 @@ app.post('/contact', function(req, res) {
 	  		slackConnection.access_token = accessToken;				
 	  	});
 
-	  	let query = "Select Id, Name, Account.Name, Phone from Contact where Name Like '%" + req.body.text + "%' LIMIT 10";
+	  	let fieldMappings = {
+	  		'Executive' : {
+	  			'GTCR_Vertical__c' : 'GTCR Vertical',
+	  			'Industry__c' : 'Industry',
+	  			'Priority__c' : 'Priority',
+	  			'Priority_Tier__c' : 'Priority Tier',
+	  			'Targeted_Role__c' : 'Targeted Role',
+	  			'Relationship_Manager__r.Name' : 'Relationship Manager' 
+	  		}, 
+	  		'Intermediary': {
+	  			'Verticals_Covered__c' : 'Verticals Covered',
+	  			'Intermediary_Type__c' : 'Intermediary Type',
+	  			'Banker_Type__c' : 'Banker Type'
+	  		}
+	  	}			  
+	  	let commonFields = {
+	  		'Name' : 'Name',
+	  		'Recordtype.Name' : 'Recordtype',
+	  		'Title' : 'Title',
+	  		'Account.Name': 'Company Name'
+	  	}
+	  	
+	  	let allFields = ['Id', 'Recordtype.DeveloperName'];
+	  	allFields = allFields.concat(commonFields);
+	  	for( let recordtype in fieldMappings) {
+	  		allFields = allFields.concat(Object.keys(fieldMappings[recordtype]));
+	  	}
+
+	  	let query = "Select " + allFields.join(',') + " from Contact where Name Like '%" + req.body.text + "%' LIMIT 10";
 	  	console.log('Query', query)
 	  	
 	  	conn.query(query)
 	  	    .on("record", function(record){
 	  	    	let fields = [];
+	  	    	//common fields 
 	  	    	fields.push({
-	  	    		'title': 'Name', 
+    				title: 'Name', 
 	  	    		value: record.Name, 
 	  	    		short: true
 	  	    	});
 	  	    	fields.push({
-	  	    		'title': 'Account Name', 
-	  	    		value: (record.Account) ? record.Account.Name : '',
+    				title: 'Record Type', 
+	  	    		value: record.Recordtype.Name, 
 	  	    		short: true
 	  	    	});
 	  	    	fields.push({
-	  	    		'title': 'Phone', 
-	  	    		value: record.Phone, 
+    				title: 'Title', 
+	  	    		value: record.Title, 
 	  	    		short: true
 	  	    	});
+	  	    	fields.push({
+	  	    		'title': 'Company Name', 
+	  	    		value: (record.Account) ? record.Account.Name : '',
+	  	    		short: true
+	  	    	});
+	  	    	//Executive record Type
+	  	    	if( record.Recordtype.Name == 'Executive' ) {
+	  	    		fields.push({
+		  	    		'title': 'GTCR Vertical', 
+		  	    		value: record.GTCR_Vertical__c,
+		  	    		short: true
+	  	    		});
+	  	    		fields.push({
+		  	    		'title': 'Industry', 
+		  	    		value: record.Industry__c,
+		  	    		short: true
+	  	    		});
+	  	    		fields.push({
+		  	    		'title': 'Priority', 
+		  	    		value: record.Priority__c,
+		  	    		short: true
+	  	    		});
+	  	    		fields.push({
+		  	    		'title': 'Priority Tier', 
+		  	    		value: record.Priority_Tier__c,
+		  	    		short: true
+	  	    		});
+	  	    		fields.push({
+		  	    		'title': 'Targeted Role', 
+		  	    		value: record.Targeted_Role__c,
+		  	    		short: true
+	  	    		});
+	  	    		fields.push({
+		  	    		'title': 'Relationship Manager', 
+		  	    		value: (record.Relationship_Manager__r) ? record.Relationship_Manager__r.Name : '',
+		  	    		short: true
+	  	    		});
+	  	    	} 
+	  	    	//Intermediary Record Type
+	  	    	if( record.Recordtype.Name == 'Intermediary' ) {
+	  	    		fields.push({
+		  	    		'title': 'Verticals Covered', 
+		  	    		value: record.Verticals_Covered__c,
+		  	    		short: true
+	  	    		});
+	  	    		fields.push({
+		  	    		'title': 'Intermediary Type', 
+		  	    		value: record.Intermediary_Type__c,
+		  	    		short: true
+	  	    		});
+	  	    		fields.push({
+		  	    		'title': 'Banker Type', 
+		  	    		value: record.Banker_Type__c,
+		  	    		short: true
+	  	    		});
+	  	    	}
 	  	    	records.push({
 	  	    		color: "#A094ED",
 	  	    		fields: fields
