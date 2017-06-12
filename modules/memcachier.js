@@ -18,9 +18,7 @@ exports.getOAuth2Token = (slackUserId) => {
 }
 
 exports.setOAuth2Token = (slackUserId, oauth2Token) => {
-	/*mjs.set(slackUserId, JSON.stringify(oauth2Token), function(err) {
-		if(err) {
-			console.log('err', err);
-		} 
-	});*/
+	mjs.set(slackUserId, oauth2Token, function(err){
+		
+	});
 }

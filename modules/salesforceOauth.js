@@ -8,7 +8,7 @@ let request = require('request');
 let jsforce = require('jsforce');
 let memory = require('./memcachier');
 
-let slackConnections = {};
+/*let slackConnections = {};*/
 
 exports.loginLink = (req, res) => {
 	/*if( !slackConnections[req.query.user_id] ) {
@@ -45,7 +45,8 @@ exports.oAuthCallback = (req, res) => {
             console.log(error);
             return res.send("error");
         }
-        slackConnections[slackUserId] = JSON.parse(body);
+        memory.setOAuth2Token(slackUserId, body);
+        /*slackConnections[slackUserId] = JSON.parse(body);*/
         let html = `
             <html>
                 <body style="text-align:center;padding-top:100px">
@@ -67,7 +68,7 @@ exports.oAuthCallback = (req, res) => {
 
 exports.getOauthConnection = (slackUserId) => {
     
-    let connection = slackConnections[slackUserId];
+    /*let connection = slackConnections[slackUserId];
     
     if( slackConnections[slackUserId] ) {
         let conn = new jsforce.Connection({
@@ -87,7 +88,32 @@ exports.getOauthConnection = (slackUserId) => {
         });
 
         return conn;
-    }    
+    }*/   
+    return new Promise((resolve, reject) => {
+        memory.getOAuth2Token(slackUserId).then(function(oAuthToken){
+            let conn = new jsforce.Connection({
+                oauth2 : {
+                    clientId : SF_CLIENT_ID,
+                    clientSecret : SF_CLIENT_SECRET,
+                    redirectUri : ''
+                },
+                accessToken: connection.access_token,
+                refreshToken: connection.refresh_token,
+                instanceUrl: connection.instance_url,
+                id: connection.id
+            });
+        
+            conn.on('refresh', function(accessToken, resp) {
+                oAuthToken.access_token = accessToken;  
+                memory.setOAuth2Token(slackUserId, oAuthToken);           
+            });
+            
+            resolve(conn);
+
+        }, function(){
+            reject();
+        });
+    });
 }
 
-exports.getSlackUser = (slackUserId) => slackConnections[slackUserId];
+/*exports.getSlackUser = (slackUserId) => slackConnections[slackUserId];*/
