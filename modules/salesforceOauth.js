@@ -127,6 +127,7 @@ exports.getOauthConnection = (slackUserId) => {
 }
 
 let getSalesforceConnection = (oAuth2Token, slackUserId) => {
+    console.log('oAuth2Token', oAuth2Token);
     let conn = new jsforce.Connection({
             oauth2 : {
                 clientId : SF_CLIENT_ID,
