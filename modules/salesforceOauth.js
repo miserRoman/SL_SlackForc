@@ -89,7 +89,7 @@ exports.getOauthConnection = (slackUserId) => {
 
         return conn;
     }*/   
-    return new Promise((resolve, reject) => {
+    return new Promise((resolveConn, rejectConn) => {
         memory.getOAuth2Token(slackUserId).then(function(oAuthToken){
             let conn = new jsforce.Connection({
                 oauth2 : {
@@ -109,10 +109,10 @@ exports.getOauthConnection = (slackUserId) => {
             });
             console.log('ssssss', conn);
 
-            resolve(conn);
+            resolveConn(conn);
 
         }, function(){
-            reject();
+            rejectConn();
         });
     });
 }
