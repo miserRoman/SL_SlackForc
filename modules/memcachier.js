@@ -1,7 +1,7 @@
 "use strict";
 
 let memjs = require("memjs").Client;
-let mc = memjs.Client.create();
+let mc = memjs.Client();
 
 exports.getOAuth2Token = (slackUserId) => {
 	return new Promise((resolve, reject)=>{
