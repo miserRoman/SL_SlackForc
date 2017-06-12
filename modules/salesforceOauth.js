@@ -107,7 +107,8 @@ exports.getOauthConnection = (slackUserId) => {
                 oAuthToken.access_token = accessToken;  
                 memory.setOAuth2Token(slackUserId, oAuthToken);           
             });
-            
+            console.log('ssssss', conn);
+
             resolve(conn);
 
         }, function(){
