@@ -6,20 +6,25 @@ let SF_LOGIN_URL = process.env.SF_LOGIN_URL;
 
 let request = require('request');
 let jsforce = require('jsforce');
+let memory = require('./memcachier');
 
 let slackConnections = {};
 
 exports.loginLink = (req, res) => {
-	if( !slackConnections[req.query.user_id] ) {
+	/*if( !slackConnections[req.query.user_id] ) {
         res.send(`Visit this URL to login to Salesforce: https://${req.hostname}/login/` + req.query.user_id);
     } else {
         res.send({text: '*Already authenticated!!*'});
-    }
+    }*/
+    memory.getOAuth2Token(req.query.user_id).then(function(oAuthToken){
+        res.send(`Visit this URL to login to Salesforce: https://${req.hostname}/login/` + req.query.user_id);
+    }, function(){
+        res.send({text: '*Already authenticated!!*'});
+    })
 }
 
 exports.oAuthLink = (req, res) => {
-    /*&prompt=login&display=popup*/
-	res.redirect(`${SF_LOGIN_URL}/services/oauth2/authorize?response_type=code&prompt=login&display=popup&client_id=${SF_CLIENT_ID}&redirect_uri=https://${req.hostname}/oauthcallback&state=${req.params.slackUserId}`);
+    res.redirect(`${SF_LOGIN_URL}/services/oauth2/authorize?response_type=code&prompt=login&display=popup&client_id=${SF_CLIENT_ID}&redirect_uri=https://${req.hostname}/oauthcallback&state=${req.params.slackUserId}`);
 }
 
 exports.oAuthCallback = (req, res) => {
