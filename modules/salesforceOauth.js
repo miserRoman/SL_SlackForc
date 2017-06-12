@@ -17,9 +17,9 @@ exports.loginLink = (req, res) => {
         res.send({text: '*Already authenticated!!*'});
     }*/
     memory.getOAuth2Token(req.query.user_id).then(function(oAuthToken){
-        res.send(`Visit this URL to login to Salesforce: https://${req.hostname}/login/` + req.query.user_id);
+        res.send({text: '*Already authenticated!!*'});        
     }, function(){
-        res.send({text: '*Already authenticated!!*'});
+        res.send(`Visit this URL to login to Salesforce: https://${req.hostname}/login/` + req.query.user_id);
     })
 }
 
