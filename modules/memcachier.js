@@ -9,7 +9,7 @@ exports.getOAuth2Token = (slackUserId) => {
 			console.log('err', err);
 			console.log('oauth2Token', oauth2Token.toString());
 			if( oauth2Token ) {
-				resolve(oauth2Token)
+				resolve(JSON.parse(oauth2Token.toString()))
 			} else {
 				reject();
 			}
