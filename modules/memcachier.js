@@ -8,7 +8,7 @@ exports.getOAuth2Token = (slackUserId) => {
 		mjs.get(slackUserId, function(err, oauth2Token){
 			console.log('err', err);
 			console.log('oauth2Token', oauth2Token);
-			if( oauth2Token ) {
+			if( oauth2Token != null ) {
 				resolve(oauth2Token)
 			} else {
 				reject();
