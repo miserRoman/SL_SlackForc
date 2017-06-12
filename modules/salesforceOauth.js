@@ -97,10 +97,10 @@ exports.getOauthConnection = (slackUserId) => {
                     clientSecret : SF_CLIENT_SECRET,
                     redirectUri : ''
                 },
-                accessToken: connection.access_token,
-                refreshToken: connection.refresh_token,
-                instanceUrl: connection.instance_url,
-                id: connection.id
+                accessToken: oAuthToken.access_token,
+                refreshToken: oAuthToken.refresh_token,
+                instanceUrl: oAuthToken.instance_url,
+                id: oAuthToken.id
             });
         
             conn.on('refresh', function(accessToken, resp) {
