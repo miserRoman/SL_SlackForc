@@ -19,7 +19,7 @@ exports.getRecords = (req, res) => {
 	  	    .on("record", function(record){
 	  	    	let fields = [];
 	  	    	//common fields 
-	  	    	console.log('record', record);
+	  	    	
 	  	    	fields.push({
     				title: 'Name', 
 	  	    		value: record.Name, 

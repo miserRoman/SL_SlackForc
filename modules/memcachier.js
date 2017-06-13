@@ -19,9 +19,9 @@ exports.setOAuth2Token = (slackUserId, oauth2Token) => {
 	return new Promise((resolve, reject) => {
 		mjs.set(slackUserId, oauth2Token, function(err){
 			if(err) {
-				resolve();
-			} else {
 				reject();
+			} else {
+				resolve();
 			}
 		});
 	});
