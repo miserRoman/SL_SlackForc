@@ -11,12 +11,7 @@ let memory = require('./memcachier');
 let slackConnections = {};
 
 exports.loginLink = (req, res) => {
-	/*if( !slackConnections[req.query.user_id] ) {
-        res.send(`Visit this URL to login to Salesforce: https://${req.hostname}/login/` + req.query.user_id);
-    } else {
-        res.send({text: '*Already authenticated!!*'});
-    }*/
-    memory.getOAuth2Token(req.query.user_id).then(function(oAuthToken){
+	memory.getOAuth2Token(req.query.user_id).then(function(oAuthToken){
         res.send({text: '*Already authenticated!!*'});        
     }, function(){
         res.send(`Visit this URL to login to Salesforce: https://${req.hostname}/login/` + req.query.user_id);
@@ -45,25 +40,9 @@ exports.oAuthCallback = (req, res) => {
             console.log(error);
             return res.send("error");
         }
-        /*memory.setOAuth2Token(slackUserId, body);
-        slackConnections[slackUserId] = JSON.parse(body);
-        let html = `
-            <html>
-                <body style="text-align:center;padding-top:100px">
-                    <div style="font-family:'Helvetica Neue';font-weight:300;color:#444">
-                        <h2 style="font-weight: normal">
-                            Authentication completed
-                        </h2>
-                        <h3>
-                            Your Slack User Id is now linked to your Salesforce User Id.<br/>
-                            You can now go back to Slack and execute authenticated Salesforce commands.
-                        </h3>
-                    </div><br/>
-                </body>
-            </html>
-            `;
-        res.send(html);*/
-        let htmlSuccess = `<html>
+        
+        let successFunction = function() {
+            let htmlSuccess = `<html>
                         <body style="text-align:center;padding-top:100px">
                             <div style="font-family:'Helvetica Neue';font-weight:300;color:#444">
                                 <h2 style="font-weight: normal">
@@ -76,7 +55,10 @@ exports.oAuthCallback = (req, res) => {
                             </div><br/>
                         </body>
                     </html>`;
-        let htmlError = `<html>
+            res.send(htmlSuccess);        
+        } 
+        let failureFunction = function() {
+            let htmlError = `<html>
                         <body style="text-align:center;padding-top:100px">
                             <div style="font-family:'Helvetica Neue';font-weight:300;color:#444">
                                 <h2 style="font-weight: normal">
@@ -85,38 +67,13 @@ exports.oAuthCallback = (req, res) => {
                             </div><br/>
                         </body>
                     </html>`;
-
-        memory.setOAuth2Token(slackUserId, body).then(function(){
-            res.send(htmlSuccess);
-        }, function(){
-            res.send(htmlError);
-        });
+            res.send(htmlError);        
+        }
+        memory.setOAuth2Token(slackUserId, body).then(successFunction, failureFunction);
     });
 }
 
 exports.getOauthConnection = (slackUserId) => {
-    
-    /*let connection = slackConnections[slackUserId];
-    
-    if( slackConnections[slackUserId] ) {
-        let conn = new jsforce.Connection({
-            oauth2 : {
-                clientId : SF_CLIENT_ID,
-                clientSecret : SF_CLIENT_SECRET,
-                redirectUri : ''
-            },
-            accessToken: connection.access_token,
-            refreshToken: connection.refresh_token,
-            instanceUrl: connection.instance_url,
-            id: connection.id
-        });
-        
-        conn.on('refresh', function(accessToken, resp) {
-            connection.access_token = accessToken;             
-        });
-
-        return conn;
-    }*/
     return new Promise((connResolve, connReject) => {
         memory.getOAuth2Token(slackUserId).then(function(oAuth2Token){
             connResolve(getSalesforceConnection(oAuth2Token, slackUserId));
@@ -127,7 +84,6 @@ exports.getOauthConnection = (slackUserId) => {
 }
 
 let getSalesforceConnection = (oAuth2Token, slackUserId) => {
-    console.log('oAuth2Token', oAuth2Token);
     let conn = new jsforce.Connection({
             oauth2 : {
                 clientId : SF_CLIENT_ID,
