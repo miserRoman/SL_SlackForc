@@ -16,6 +16,7 @@
     "express": "^4.15.3",
     "jsforce": "^1.8.0",
     "memjs": "^1.0.0-rc.1",
+    "newrelic": "^1.40.0",
     "nforce": "^1.7.0",
     "request": "^2.81.0"
   }

@@ -13,7 +13,7 @@ let slackConnections = {};
 exports.loginLink = (req, res) => {
 	memory.getOAuth2Token(req.query.user_id).then(function(oAuthToken){
         res.send({text: '*Already authenticated!!*'});        
-    }, function(){                                                                                                                                                                                                                                                                                  
+    }, function(){
         res.send(`Visit this URL to login to Salesforce: https://${req.hostname}/login/` + req.query.user_id);
     })
 }
