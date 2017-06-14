@@ -12,7 +12,7 @@ exports.getRecords = (req, res) => {
 	  		'Verticals_Covered__c', 'Intermediary_Type__c', 'Banker_Type__c'
 	  	];
 	  	
-	  	let query = "Select " + allFields.join(',') + " from Contact where Name Like '%" + req.body.text + "%' LIMIT 10";
+	  	let query = "Select " + allFields.join(',') + " from Contact where Name Like '%" + req.body.text + "%' LIMIT 20";
 	  	console.log('Query', query)
 	  	
 	  	connection.query(query)
