@@ -110,7 +110,10 @@ exports.getRecords = (req, res) => {
 	  	    	});
 	  	    })
 	  	    .on("end", function(){
-	  	    	res.json({text: "Contacts matching " , attachments: records})
+	  	    	if(records && records.length > 0)
+	  	    		res.json({text: "Contacts matching " , attachments: records})
+	  	    	else 
+	  	    		res.json({text: "No Contacts found"})
 	  	    })
 	  	    .on("error", function(err) {
 	  	    	console.log('err', err);

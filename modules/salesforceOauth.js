@@ -95,10 +95,9 @@ let getSalesforceConnection = (oAuth2Token, slackUserId) => {
             instanceUrl: oAuth2Token.instance_url,
             id: oAuth2Token.id
         });
-    console.log('hereeeeeeee');    
+     
     conn.on('refresh', function(accessToken, resp) {
         oAuth2Token.access_token = accessToken;
-        console.log('ssssssssssssssss', accessToken);
         memory.setOAuth2Token(slackUserId, oAuth2Token).then(function(){},function(){});             
     });
 
