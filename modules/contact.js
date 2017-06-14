@@ -7,7 +7,6 @@ exports.getRecords = (req, res) => {
 	let records = [];
 	let fetchRecords = function(connection) {
 		connection.apex.post("/getContacts/", {"strName": req.body.text}, function(err, result){
-			console.log('result  ', result);
 			let recordsResult = JSON.parse(result);
 			recordsResult.forEach(function(record, index){
 				records.push({
@@ -30,7 +29,9 @@ exports.getRecords = (req, res) => {
 	salesforce.getOauthConnection(slackUserId).then(fetchRecords, failureFunction); 	
 }
 
-let compileRecords = (record) => {
+let compileRecords = (recordWrapper) => {
+	let record = recordWrapper.objContact;
+	let activity = recordWrapper.objActivity;
 	let fields = [];
 	fields.push({
 		title: 'Name', 
@@ -93,6 +94,21 @@ let compileRecords = (record) => {
     		value: (record.Relationship_Manager__r) ? record.Relationship_Manager__r.Name : '',
     		short: true,
     		mrkdwn: true
+		});
+		fields.push({
+			title: 'Latest Activity Date',
+			value: activity.dtActivityDate,
+			short: true
+		});
+		fields.push({
+			title: 'Latest Activity Subject',
+			value: activity.strActivitySubject,
+			short: true
+		});
+		fields.push({
+			title: 'Latest GTCR Attendees',
+			value: activity.strGTCRAttendees,
+			short: true
 		});
 	} 
 	//Intermediary Record Type

@@ -26,7 +26,3 @@ exports.setOAuth2Token = (slackUserId, oauth2Token) => {
 		});
 	});
 }
-
-exports.deleteOauth2Token = (slackUserId) => {
-	
-}
