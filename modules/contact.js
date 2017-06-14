@@ -6,7 +6,7 @@ exports.getRecords = (req, res) => {
 	let slackUserId = req.body.user_id;
 	let records = [];
 	let fetchRecords = function(connection) {
-		connection.apex.post("/getContacts/", req.body.text, function(err, result){
+		connection.apex.post("/getContacts/", {"strName": req.body.text}, function(err, result){
 			console.log('result  ', result);
 			let recordsResult = JSON.parse(result);
 			recordsResult.forEach(function(record, index){
